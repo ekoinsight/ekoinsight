@@ -5,7 +5,6 @@
   "author": "Creative Tim for the template, team Ekoinsight for customization",
   "license": "See license in https://www.creative-tim.com/license",
   "description": "Frontend for Ekoinsight project",
-  "homepage": "https://demos.creative-tim.com/material-kit-react/#/",
   "dependencies": {
     "@emotion/cache": "11.10.7",
     "@emotion/react": "11.10.6",
