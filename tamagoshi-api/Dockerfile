@@ -10,4 +10,4 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/tamagoshi-api .
 EXPOSE 8080
-CMD ["./myapp"]
+CMD ["./tamagoshi-api"]
