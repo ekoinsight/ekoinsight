@@ -39,7 +39,7 @@ function Profile(idToken) {
               <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <MKTypography variant="h3">Welcome {profile.given_name} !</MKTypography>
                 <MKButton variant="outlined" color="info" size="small">
-                  Add create new idea here
+                  Start now !
                 </MKButton>
               </MKBox>
               <MKTypography variant="body2" fontWeight="light" color="text">
