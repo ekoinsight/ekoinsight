@@ -1,11 +1,11 @@
 import replicate
 import os
-from .ApiReplicate import ApiReplicate
+from BotCapabilities.ApiReplicate import ApiReplicate
 import spacy
 import cv2
 import numpy as np
 import requests
-from ..utils import *
+from utils import *
 class ApiSegEverythingReplicate(ApiReplicate):
     #https://replicate.com/yyjim/segment-anything-tryout
     def __init__(self,dry_run=False):

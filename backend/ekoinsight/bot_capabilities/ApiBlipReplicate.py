@@ -1,6 +1,6 @@
 import replicate
 import os
-from .ApiReplicate import ApiReplicate
+from BotCapabilities.ApiReplicate import ApiReplicate
 import spacy
 
 

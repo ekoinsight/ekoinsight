@@ -6,7 +6,9 @@ import fastapi
 from bot_capabilities.ApiImgDreamStudio import ApiImgDreamStudio
 from bot_capabilities.ApiBlipReplicate import ApiBlipReplicate
 from bot_capabilities.ApiChatGpt import ApiChatGpt
-
+from bot_capabilities.LocalMask import LocalMask
+from bot_capabilities.EkoInsightBot import EkoInsightBot
+from bot_capabilities.ApiWatsonX import ApiWatsonX
 app = fastapi.FastAPI()
 
 
@@ -21,20 +23,51 @@ def load_config():
 
 config_data=load_config()
 
-img_identifier=ApiBlipReplicate(dry_run=True)
-# mask_provider=LocalMask(dry_run=False)
-prompt_provider=ApiChatGpt(dry_run=True)
-img_provider=ApiImgDreamStudio(dry_run=True)
 
-# sfx_provider=ApiSfxReplicate(dry_run=False)
+img_identifier=ApiBlipReplicate(dry_run=False)
+mask_provider=LocalMask(dry_run=False)
+#prompt_provider=ApiChatGpt(dry_run=True)
+prompt_provider=ApiWatsonX(dry_run=False)
+img_provider=ApiImgDreamStudio(dry_run=False)
 
-# ekoinsightbot=EkoInsightBot(prompt_provider,img_provider,img_identifier,mask_provider)
+#sfx_provider=ApiSfxReplicate(dry_run=False)
+
+ekoinsightbot=EkoInsightBot(prompt_provider,img_provider,img_identifier,mask_provider)
 
 print("###### EkoInsightBot READY##########")
 
 input_dir=config_data['input_paths']['imgs']
 
-# uploaded_image_filepath= None  # Initialize a global variable
+uploaded_image_filepath= None  # Initialize a global variable
+
+
+@app.post("/feed/")
+async def identify_image(file: UploadFile):
+    print("upload detected")
+    global uploaded_image_filepath  # Declare the global variable
+
+    if not file.filename.lower().endswith((".jpg", ".jpeg", ".png", ".gif")):
+        raise werkzeug.exceptions.HTTPException(status_code=400, detail="Only image files (jpg, jpeg, png, gif) are allowed.")
+
+    filename=file.filename.lower()
+    if '/' in filename:
+        filename=filename.split('/')[1]
+
+    print(f"filename : {filename}")
+    print(f"input_dir : {input_dir}")
+    filepath = os.path.join(input_dir, filename)
+
+    with open(filepath, "wb") as image_file:
+        image_file.write(file.file.read())
+
+    #YOU CAN PROVIDE ANY LANGUAGE YOU WANT FROM THE FRONT END AND PASS IT AS A VARIABLE IF YOU WANT
+    language="English"
+
+    score_reaction_dict = ekoinsightbot.feed(img_filename=filename,img_path=input_dir,language=language)
+    #score_reaction_dict looks like {'score':5,'reaction':'great, another can...'}
+    print(score_reaction_dict)
+    return flask.JSONResponse(content= score_reaction_dict, status_code=200)
+
 
 @app.post("/upload/")
 async def identify_image(file):

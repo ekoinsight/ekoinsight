@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 import os
 from dotenv import load_dotenv 
-import utils
 from langchain.vectorstores import Pinecone
 import pinecone
 from langchain.embeddings import HuggingFaceEmbeddings
 from dotenv import load_dotenv
+import utils
 from langchain.document_loaders.merge import MergedDataLoader
 from langchain.text_splitter import CharacterTextSplitter
 import time
@@ -30,6 +30,15 @@ class ApiClass(ABC):
                 model_kwargs=model_kwargs
             )
 
+        csv_metadata_dict={
+            "epa_material_generation_simplified.csv":"https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/studies-summary-tables-and-data-related",
+            "epa_material_recycling_simplified.csv":"https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/studies-summary-tables-and-data-related",
+            "Recycling_Diversion_and_Capture_Rates.csv":"https://catalog.data.gov/dataset/recycling-diversion-and-capture-rates",
+            "Recycling rates by country 2021.csv":"https://en.wikipedia.org/wiki/Recycling_rates_by_country",
+            "householdwasteandrecycling.csv":"https://storage.googleapis.com/dx-lincolnshire-prod/lincolnshire-prod/resources/b3363c5b-5ab4-4d4f-829c-5bcf04ce3972/householdwasteandrecycling.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=60&X-Amz-Credential=GOOG1EWNNJ44UCTJ4GI3FNXEKCVGS5AOA4WQ5FHJYOJNTI3QQOV4OBKOA5CWA%2F20231004%2Feurope-west1%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Date=20231004T000100Z&X-Amz-Signature=3e0d6e2672985031b02752cb6b59dac58ffd99d021d877bd10e955dfec7ec2c3",
+            "recycling rates as the proportion of recyclable materials.csv":"https://epi.yale.edu/epi-results/2022/component/rec"
+         }
+        
         if PINECONE_API_KEY:
             environment="us-west4-gcp-free"
 
@@ -51,6 +60,10 @@ class ApiClass(ABC):
                             if first_url:
                                 docs[idx].metadata['source']=first_url
 
+                    elif file_path.endswith(".csv"):
+
+                        docs[idx].metadata['source']=csv_metadata_dict.get(file_path.split("\\")[-1])
+
                 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
                 docs = text_splitter.split_documents(docs)
                 time.sleep(5)
@@ -59,7 +72,7 @@ class ApiClass(ABC):
             else:
                 # if you already have an index, you can load it like this
                 index = Pinecone.from_existing_index(index_name=index_name, embedding=embeddings)
-                time.sleep(5)
+                #time.sleep(5)
             self.index=index
         else:
             print("NO PINECONE_API_KEY DETECTED!!!")

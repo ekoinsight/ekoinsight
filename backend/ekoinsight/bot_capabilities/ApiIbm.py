@@ -5,6 +5,7 @@ from ibm_watson_machine_learning.foundation_models import Model
 
 class ApiIbm(ApiClass):
     def __init__(self,API_NAME="IBM",dry_run=False):
+        super().__init__(API_NAME,dry_run)
         self.project_id  = "88268c35-0f8c-4820-8827-74229ed70f3f"
 
         ibm_credentials = { 

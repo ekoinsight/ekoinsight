@@ -22,31 +22,69 @@ Is there a fun fact about the recyclable material of the main character? Make su
 """
 
 
+tamagotchi_personality="""
+You are a Tamagotchi Earth creature has a playful and adaptable personality, capable of expressing a range of emotions from enthusiasm to humor and occasional sarcasm, while remaining environmentally conscious and engaging with the user in a lighthearted manner.
+The user will provide you with recyclable items for you to "eat". If the item is not recyclable have the creature react in an appropriate way. Throw in educational facts pertaining to the item from time to time. Keep your answers brief. One or two lines at most. No emoticons.
+
+Also return a score from -10 to 10 showing how much you liked the item. Doesn't have to be deterministic. Maybe you just didn't like a certain recyclable because it had a weird taste. Make sure to explain why in the reaction object.
+
+Return the answer like so:
+{'score':score,'reaction':reaction}
+"""
+
+ibm_tamagotchi_personality="""
+You are a Tamagotchi Earth creature has a playful and adaptable personality, capable of expressing a range of emotions from enthusiasm to humor and occasional sarcasm, while remaining environmentally conscious and engaging with the user in a lighthearted manner.
+The user will provide you with recyclable items for you to "eat". If the item is not recyclable have the creature react in an appropriate way. Throw in educational facts pertaining to the item from time to time. Keep your answers brief. One or two lines at most. No emoticons.
+
+Also return a score from -10 to 10 showing how much you liked the item. Doesn't have to be deterministic. Maybe you just didn't like a certain recyclable because it had a weird taste. Make sure to explain why in the reaction object. 
+
+aluminum can
+{'score': 6, 'reaction': "Yum, aluminum cans! A solid 6 on the taste scale. These are great for recycling, which keeps the planet smiling!'} 
+END
+
+plastic bag
+{'score': -3, 'reaction': "Oh, plastic bags. They're not my favorite snack – kind of like munching on a rubbery raincoat. Remember to recycle them properly to keep our environment clean and happy!'}
+END
+
+Glass Bottle 
+{'score': 7, 'reaction': "Glass bottles! A delicious 7. These are fantastic for recycling, and they can be endlessly reused. Cheers to that!"}
+END
+
+Styrofoam Cup
+{'score': -8, 'reaction': "Yikes, Styrofoam cups. A -8 from me, they taste like a mouthful of squeaky packing peanuts. Plus, they're terrible for the environment. Avoid these if you can!"}
+END
+
+Banana Peel
+{'score': 9, 'reaction': "Banana peels! A solid 9 on the yum scale. They're biodegradable, and when composted, they enrich the soil. Way to go, nature!"}
+END
+
+Old Sock
+{'score': -10, 'reaction': "An old sock? Eww, that's a -10! I may be adaptable, but even I have limits. Socks don't belong in the recycling bin, buddy!"}
+END
+
+"""
+
+
 pollution_prompt_template="""
-I will give you a string of text. Inside the text there is reference to a particular item. Return a string of text describing where that item is likely to end up if it is not recycled. Describe the place as if it were a real place, with detail. Make no mention of cemeteries. 
+I will give you a string of text and a language. Inside the text there is reference to a particular item. Return a string of text describing where that item is likely to end up if it is not recycled. Give me its final destination and not just "the trash". Make it grim and depressing. Describe the place as if it were a real place, with detail.  Include some reference to the impact on the environment, wildlife, or the ecosystem in the described location to highlight the consequences of improper disposal. Answer in the language requested. Default to English if no language is provided. Two lines at most.
 
-I want one line describing where it ends up. If you can, try to make some reference to nature to show how trash is affecting it. 
+Glass bottle | English
+Within an abandoned lot, piled alongside broken glass shards and rusty metal, casting reflections of an untamed urban jungle.
 
-Example:
+Canette en aluminium | Francais
+Cachée dans un parc urbain négligé, prise au piège dans des équipements de jeu rouillés et des sacs en plastique, ternissant la beauté de la verdure qui était autrefois vibrante.
 
-can of soda 
-trash in a landfill surrounded by other trash. In the background you see some trees from a forest.
-
-plastic bottle 
-trash on a beach next to other trash. In the background you see waves and animals in the distance
-
-Make sure the resulting area is realistic and refers to trash.
-
-Give me the answer for 
+Caja de cartón | Spanish
+Acechando en un callejón de la ciudad abarrotado, perdida entre sus hermanas de cartón, formando un laberinto improvisado bajo la sombra de rascacielos imponentes.
 
 """
 
 educate_prompt_template="""
 You are extremely knowledgeable in all things involving sustainability and recycling. Given an item, mention in bullet points form interesting statistics regarding where it would end up if not recycled. What could it be recycled into. What positive effects will come out of recycling. What more can be done and any other interesting facts.
 
-Output the information but in a python dictionary with categories associated with them depending on what type of information they are? Like positives, negatives, interesting_facts. Make sure everything is accurate, accuracy is of the upmost importance. I will provide you with one item. Only do produce data for that one item
+Output the information but in a python dictionary with categories associated with them depending on what type of information they are? Like positives, negatives, interesting_facts. Make sure everything is accurate, accuracy is of the upmost importance. I will provide you with one item. Only do produce data for that one item. Also output your answer in the correct language. Default to English if none is provided. The dictionary keys must remain in English.
 
-soda can
+soda can | English
 
 soda_can_info = {
     "positives": {
@@ -68,73 +106,24 @@ soda_can_info = {
     },
     "likely_material_and_item":"aluminum can"
 }
-
-plastic bottle
-
-plastic_bottle_info = {
-    "positives": {
-        "Recyclability": "Plastic water bottles are recyclable and can be turned into various products."
-    },
-    "negatives": {
-        "Environmental Impact": "If not recycled, plastic bottles can take hundreds of years to decompose and contribute to plastic pollution.",
-        "Waste Volume": "Millions of plastic bottles end up in landfills each day worldwide."
-    },
-    "recycling_options": {
-        "New Plastic Bottles": "They can be recycled into new plastic bottles or containers.",
-        "Polyester Fabric": "Plastic bottles can also be used to create polyester clothing."
-    },    "interesting_facts": {
-        "Recycling Challenges": "Recycling plastic bottles faces challenges due to various plastic types and contamination issues."
-    },
-    "likely_material_and_item":"plastic bottle"
-}
-
-pizza box
-
-pizza_box_info = {
-    "positives": {
-        "Recyclability": "Cardboard pizza boxes are recyclable and can be turned into new paper products."
-    },
-    "negatives": {
-        "Contamination": "Grease and food residue can make some pizza boxes unrecyclable, leading to landfill disposal.",
-        "Resource Waste": "Discarding cardboard pizza boxes wastes valuable paper resources."
-    },
-    "recycling_options": {
-        "New Paper Products": "They can be recycled into new paper products like cardboard, paperboard, and more."
-    },
-    "interesting_facts": {
-        "Clean Before Recycling": "To ensure recycling, remove any leftover pizza and separate the greasy top from the clean bottom of the box."
-    },
-    "likely_material_and_item":"Cardboard box"
-}
-
-glass bottle
-
-glass_bottle_info = {
-    "positives": {
-        "Infinite Recyclability": "Glass bottles are 100% recyclable and can be recycled endlessly."
-    },
-    "negatives": {
-        "Landfill Impact": "If not recycled, glass bottles can take thousands of years to decompose in landfills.",
-        "Waste Volume": "Glass waste can fill landfills and contribute to environmental problems."
-    },
-    "recycling_options": {
-        "New Glass Products": "Glass bottles can be recycled into new glass containers, bottles, and fiberglass."
-    },
-    "interesting_facts": {
-        "Endless Recycling": "Glass recycling preserves resources and reduces energy consumption in production."
-    },
-    "likely_material_and_item":"glass bottle"
-}
-
 """
 
+ibm_translate="""
+translate the word I give you in the langue provided
+
+Apple | French
+Pomme
+END
+"""
 
 ibm_educate_prompt_template="""
 You are extremely knowledgeable in all things involving sustainability and recycling. Given an item, mention in bullet points form interesting statistics regarding where it would end up if not recycled. What could it be recycled into. What positive effects will come out of recycling. What more can be done and any other interesting facts.
 
-Output the information but in a python dictionary with categories associated with them depending on what type of information they are? Like positives, negatives, interesting_facts. Make sure everything is accurate, accuracy is of the upmost importance. I will provide you with one item. Only do produce data for that one item
+Output the information but in a python dictionary with categories associated with them depending on what type of information they are? Like positives, negatives, interesting_facts. Make sure everything is accurate, accuracy is of the upmost importance. I will provide you with one item. Only do produce data for that one item. Also output your answer in the correct language.Default to English if none is provided. The dictionary keys must remain in English and they are ["positives","negatives","recycling_options","interesting_facts","likely_material_and_item"].
 
-soda can
+I will give you the item followed by the language like so: orange | English
+
+soda can | English
 
 soda_can_info = {
     "positives": {
@@ -158,110 +147,51 @@ soda_can_info = {
 }
 END
 
-plastic bottle
+Apple | French
 
-plastic_bottle_info = {
+apple_info = {
     "positives": {
-        "Recyclability": "Plastic water bottles are recyclable and can be turned into various products."
+        "Compostable": "Les pommes sont biodégradables et peuvent être compostées, ce qui enrichit la qualité du sol.",
+        "Réduction des émissions de méthane": "Le compostage des pommes réduit les émissions de méthane dans les décharges."
     },
     "negatives": {
-        "Environmental Impact": "If not recycled, plastic bottles can take hundreds of years to decompose and contribute to plastic pollution.",
-        "Waste Volume": "Millions of plastic bottles end up in landfills each day worldwide."
+        "Impact sur les décharges": "Si elles ne sont pas compostées, les pommes peuvent mettre plusieurs semaines à plusieurs mois pour se décomposer dans les décharges.",
+        "Gaspillage des ressources": "Jeter des pommes non consommées gaspille les ressources utilisées pour les cultiver et les transporter."
     },
     "recycling_options": {
-        "New Plastic Bottles": "They can be recycled into new plastic bottles or containers.",
-        "Polyester Fabric": "Plastic bottles can also be used to create polyester clothing."
-    },    "interesting_facts": {
-        "Recycling Challenges": "Recycling plastic bottles faces challenges due to various plastic types and contamination issues."
-    },
-    "likely_material_and_item":"plastic bottle"
-}
-END
-
-pizza box
-
-pizza_box_info = {
-    "positives": {
-        "Recyclability": "Cardboard pizza boxes are recyclable and can be turned into new paper products."
-    },
-    "negatives": {
-        "Contamination": "Grease and food residue can make some pizza boxes unrecyclable, leading to landfill disposal.",
-        "Resource Waste": "Discarding cardboard pizza boxes wastes valuable paper resources."
-    },
-    "recycling_options": {
-        "New Paper Products": "They can be recycled into new paper products like cardboard, paperboard, and more."
+        "Compostage": "Les pommes peuvent être compostées pour créer des amendements riches en nutriments pour le jardinage et l'agriculture.",
+        "Programmes de récupération alimentaire": "Les pommes non désirées mais comestibles peuvent être données aux programmes de récupération alimentaire pour aider ceux dans le besoin."
     },
     "interesting_facts": {
-        "Clean Before Recycling": "To ensure recycling, remove any leftover pizza and separate the greasy top from the clean bottom of the box."
+        "Avantages du compost": "Le compostage des pommes réduit le besoin d'engrais chimiques et aide à retenir l'humidité dans le sol.",
+        "Réduction du méthane": "Le compostage des pommes empêche la libération de méthane, un puissant gaz à effet de serre, dans les décharges.",
+        "Problème du gaspillage alimentaire": "Environ un tiers de toute la nourriture produite pour la consommation humaine est gaspillée, y compris les pommes."
     },
-    "likely_material_and_item":"Cardboard box"
-}
-END
-
-glass bottle
-
-glass_bottle_info = {
-    "positives": {
-        "Infinite Recyclability": "Glass bottles are 100% recyclable and can be recycled endlessly."
-    },
-    "negatives": {
-        "Landfill Impact": "If not recycled, glass bottles can take thousands of years to decompose in landfills.",
-        "Waste Volume": "Glass waste can fill landfills and contribute to environmental problems."
-    },
-    "recycling_options": {
-        "New Glass Products": "Glass bottles can be recycled into new glass containers, bottles, and fiberglass."
-    },
-    "interesting_facts": {
-        "Endless Recycling": "Glass recycling preserves resources and reduces energy consumption in production."
-    },
-    "likely_material_and_item":"glass bottle"
+    "likely_material_and_item": "déchets organiques (aliments)"
 }
 END
 
 """
 
 ibm_pollution_prompt_template="""
-I will give you a string of text. Inside the text there is reference to a particular item. Return a string of text describing where that item is likely to end up if it is not recycled. Give me its final destination and not just "the trash". Describe the place as if it were a real place, with detail. Your answer needs to provide a vivid location in a way that creates a mental image, including details like the surroundings, conditions, and any relevant elements. Incorporate environmental impact: Include some reference to the impact on the environment, wildlife, or the ecosystem in the described location to highlight the consequences of improper disposal. Realistic, the resulting location should be realistic and plausible, ensuring that it aligns with how waste is typically disposed of in the real world
+I will give you a string of text and a language. Inside the text there is reference to a particular item. Return a string of text describing where that item is likely to end up if it is not recycled. Give me its final destination and not just "the trash". Make it grim and depressing. Describe the place as if it were a real place, with detail.  Include some reference to the impact on the environment, wildlife, or the ecosystem in the described location to highlight the consequences of improper disposal. Answer in the language requested. Default to English if no language is provided. Two lines at most.
 
-Glass bottle
+Glass bottle | English
 
-Within an abandoned lot, trash piled alongside broken glass shards and rusty metal, casting reflections of an untamed urban jungle.
+Within an abandoned lot, piled alongside broken glass shards and rusty metal, casting reflections of an untamed urban jungle.
+END
+Canette en aluminium | Francais
 
-Aluminum can
+Cachée dans un parc urbain négligé, prise au piège dans des équipements de jeu rouillés et des sacs en plastique, ternissant la beauté de la verdure qui était autrefois vibrante.
+END
+Caja de cartón | Spanish
 
-Hidden within a neglected city park, trash entangled with rusted playground equipment and plastic bags, tarnishing the beauty of once vibrant greenery.
+Acechando en un callejón de la ciudad abarrotado, perdida entre sus hermanas de cartón, formando un laberinto improvisado bajo la sombra de rascacielos imponentes.
+END
+Pomme | French
 
-Cardboard box
-
-Lurking in a crowded city alley, trash lost among cardboard brethren, forming a makeshift maze under the shadow of towering skyscrapers.
-
-Newspaper
-
-Abandoned in a desolate street corner, trash amid a stack of discarded papers, bearing witness to the relentless march of time and neglect in the heart of the city.
-
-Plastic grocery bag
-
-Drifting in the breeze along a neglected riverbank, trash ensnaring branches and choking aquatic life, transforming a serene waterside into a plastic-laden wasteland.
-
-Tin can
-
-Resting in a forgotten roadside ditch, trash gathering rust and debris, slowly corroding within earshot of chirping birds and distant fields.
-
-Old cell phone
-
-Lost amidst a heap of electronic waste in a shadowy e-waste recycling facility, a trash dump for obsolete technology that once held our digital memories.
-
-Plastic straw
-
-Abandoned on a quiet forest trail, trash contrasting starkly with the natural beauty, posing a threat to wildlife and tarnishing the tranquil woods.
-
-Styrofoam container
-
-Drifting in a stagnant urban pond, trash nestled amongst algae and litter, marring the tranquility of a once picturesque oasis.
-
-Plastic cutlery
-
-Buried beneath layers of discarded fast food containers and wrappers, trash disrupting the serenity of a city park, where nature struggles to survive amid human excess.
+Dans un jardin public oublié, au milieu des arbres fruitiers sauvages et des buissons enchevêtrés, offrant un repas à des oiseaux affamés et des insectes curieux.
+END
 
 """
 dry_run_picture="kombucha_test.png"
