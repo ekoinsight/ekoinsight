@@ -3,7 +3,7 @@ FROM golang:1.21 AS build
 WORKDIR /app
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o tamagoshi-api
+RUN go build
 
 # Stage 2: Final Image
 FROM alpine:latest
