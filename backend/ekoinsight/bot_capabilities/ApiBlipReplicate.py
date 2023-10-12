@@ -49,11 +49,20 @@ class ApiBlipReplicate(ApiReplicate):
                 sfx_string,
                 input={"image": open(img_path, "rb"),
                     #"task":"image_captioning",
-                    "question":"Describe the object"
+                    "question":"what is the object shown and what is it made of?",
+                    "context":"""what is the object shown and what is it made of?
+                    carboard box
+
+                    what is the object shown and what is it made of?
+                    aluminum can
+
+                    what is the object shown and what is it made of?
+                    plastic bag"""
                     }
             )
 
-        return self.get_main_subject(response)
+        #return self.get_main_subject(response)
+        return response
     
     def execute(self,img_path):
         return self.api_fetch(img_path)
