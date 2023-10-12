@@ -32,3 +32,5 @@ unstructured
 sentence-transformers
 faiss-cpu
 imageio==2.31.4
+Flask
+Werkzeug

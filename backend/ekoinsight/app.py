@@ -2,15 +2,17 @@ import os
 import json
 
 import fastapi
-
+from fastapi.responses import JSONResponse
+import flask
+import werkzeug
 from bot_capabilities.ApiImgDreamStudio import ApiImgDreamStudio
 from bot_capabilities.ApiBlipReplicate import ApiBlipReplicate
 from bot_capabilities.ApiChatGpt import ApiChatGpt
-from bot_capabilities.LocalMask import LocalMask
+#from bot_capabilities.LocalMask import LocalMask
+from bot_capabilities.ApiSegEverythingReplicate import ApiSegEverythingReplicate
 from bot_capabilities.EkoInsightBot import EkoInsightBot
 from bot_capabilities.ApiWatsonX import ApiWatsonX
 app = fastapi.FastAPI()
-
 
 @app.get("/")
 async def hello_world():
@@ -25,9 +27,9 @@ config_data=load_config()
 
 
 img_identifier=ApiBlipReplicate(dry_run=False)
-mask_provider=LocalMask(dry_run=False)
-#prompt_provider=ApiChatGpt(dry_run=True)
-prompt_provider=ApiWatsonX(dry_run=False)
+mask_provider=ApiSegEverythingReplicate(dry_run=False)
+prompt_provider=ApiChatGpt(dry_run=False)
+#prompt_provider=ApiWatsonX(dry_run=False)
 img_provider=ApiImgDreamStudio(dry_run=False)
 
 #sfx_provider=ApiSfxReplicate(dry_run=False)
@@ -42,7 +44,7 @@ uploaded_image_filepath= None  # Initialize a global variable
 
 
 @app.post("/feed/")
-async def identify_image(file: UploadFile):
+async def identify_image(file: fastapi.UploadFile):
     print("upload detected")
     global uploaded_image_filepath  # Declare the global variable
 
@@ -66,29 +68,29 @@ async def identify_image(file: UploadFile):
     score_reaction_dict = ekoinsightbot.feed(img_filename=filename,img_path=input_dir,language=language)
     #score_reaction_dict looks like {'score':5,'reaction':'great, another can...'}
     print(score_reaction_dict)
-    return flask.JSONResponse(content= score_reaction_dict, status_code=200)
+    return JSONResponse(content=score_reaction_dict, status_code=200)
 
 
-@app.post("/upload/")
-async def identify_image(file):
-    print("upload detected")
-    global uploaded_image_filepath  # Declare the global variable
+# @app.post("/upload/")
+# async def identify_image(file):
+#     print("upload detected")
+#     global uploaded_image_filepath  # Declare the global variable
 
-    if not file.filename.lower().endswith((".jpg", ".jpeg", ".png", ".gif")):
-        raise werkzeug.exceptions.HTTPException(status_code=400, detail="Only image files (jpg, jpeg, png, gif) are allowed.")
+#     if not file.filename.lower().endswith((".jpg", ".jpeg", ".png", ".gif")):
+#         raise werkzeug.exceptions.HTTPException(status_code=400, detail="Only image files (jpg, jpeg, png, gif) are allowed.")
 
-    filename = f"uploaded_image_{os.urandom(4).hex()}.jpg"
-    filepath = os.path.join(input_dir, filename)
+#     filename = f"uploaded_image_{os.urandom(4).hex()}.jpg"
+#     filepath = os.path.join(input_dir, filename)
 
-    with open(filepath, "wb") as image_file:
-        image_file.write(file.file.read())
+#     with open(filepath, "wb") as image_file:
+#         image_file.write(file.file.read())
 
-    object_identification = img_identifier.execute(filepath)
-    print("image identified")
-    # uploaded_image_filepath = filepath
-    print(f"returning :{object_identification}")
-    # Create a JSONResponse with a 200 status code
-    return flask.JSONResponse(content= {"description": object_identification}, status_code=200)
+#     object_identification = img_identifier.execute(filepath)
+#     print("image identified")
+#     # uploaded_image_filepath = filepath
+#     print(f"returning :{object_identification}")
+#     # Create a JSONResponse with a 200 status code
+#     return flask.JSONResponse(content= {"description": object_identification}, status_code=200)
 
 
 # @app.post("/imagine/")
@@ -103,3 +105,6 @@ async def identify_image(file):
 #     # Create a JSONResponse with a 200 status code
 #     return JSONResponse(content={"inpaint_path": inpaint_path}, status_code=200)
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

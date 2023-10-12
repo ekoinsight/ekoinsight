@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EkoInsight</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #00FF00, #006600);
+            /* Green gradient */
+        }
+
+        #image-container {
+            display: none;
+            text-align: center;
+        }
+
+        #description {
+            width: 300px;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>EkoInsight</h1>
+
+    <!-- File upload input -->
+    <input type="file" id="file-input">
+    <button onclick="uploadImage()">Upload</button>
+
+    <!-- Image and description display -->
+    <div id="image-container">
+        <img id="uploaded-image" src="" alt="Uploaded Image">
+        <input id="description" type="text" placeholder="Image Description" readonly>
+    </div>
+
+    <!-- Button to trigger image processing -->
+    <button id="imagine-button" onclick="imagineImage()" style="display: none;">Imagine</button>
+
+    <!-- Display the processed image -->
+    <img id="processed-image" src="" alt="Processed Image" style="display: none;">
+
+    <script>
+        async function uploadImage() {
+            try {
+                const fileInput = document.getElementById('file-input');
+                const imageContainer = document.getElementById('image-container');
+                const descriptionInput = document.getElementById('description');
+                const imagineButton = document.getElementById('imagine-button');
+                const uploadedImage = document.getElementById('uploaded-image');
+
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                const response = await fetch('http://localhost:8000/feed/', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.hasOwnProperty("description")) {
+                    descriptionInput.value = data["description"];
+                } else {
+                    descriptionInput.value = 'Description not available';
+                }
+
+                uploadedImage.src = data["image_path"];
+                imageContainer.style.display = 'block';
+                imagineButton.style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

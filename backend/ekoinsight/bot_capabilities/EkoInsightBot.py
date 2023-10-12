@@ -37,11 +37,13 @@ class EkoInsightBot(BotClass):
         start=time.time()
         self.identified_object=self.img_identifier.execute(img_path=self.img_full_path)
 
-        print(f"img identified took {time.time()-start}s") #takes about 3 seconds
+        print(f"img identified took {time.time()-start}s : {self.identified_object}") #takes about 3 seconds
 
         start=time.time()
         rationale=self.prompt_provider.fetch_prompt(item=self.identified_object,prompt_template='tamagotchi_personality',max_tokens=1000, stop_sequences= ["END"])
         print(f"rationale generated : took {time.time()-start}s")
+
+        print(f"rationale : {rationale}")
 
         if self.language!="English":
             rationale=self.prompt_provider.translate(rationale,self.language)

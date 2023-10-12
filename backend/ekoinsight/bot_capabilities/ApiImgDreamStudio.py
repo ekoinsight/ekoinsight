@@ -3,8 +3,8 @@ import warnings
 from PIL import Image,ImageOps
 import io
 from torchvision.transforms import GaussianBlur
-from BotCapabilities.ApiDreamStudio import ApiDreamStudio
-from BotCapabilities.BotClass import BotClass
+from bot_capabilities.ApiDreamStudio import ApiDreamStudio
+from bot_capabilities.BotClass import BotClass
 import cv2
 import numpy as np
 

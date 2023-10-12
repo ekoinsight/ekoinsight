@@ -1,6 +1,6 @@
 import replicate
 import os
-from BotCapabilities.ApiReplicate import ApiReplicate
+from bot_capabilities.ApiReplicate import ApiReplicate
 import spacy
 import cv2
 import numpy as np
