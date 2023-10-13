@@ -144,8 +144,8 @@ material-kit-2-react
     │   ├── index.js
     │   ├── footer.routes.js
     │   └── routes.js
-    ├── .eslintrc.json
-    ├── .prettierrc.json
+    ├── .eslintrc.AbortWithStatusJSON
+    ├── .prettierrc.AbortWithStatusJSON
     ├── CHANGELOG.md
     ├── ISSUE_TEMPLATE.md
     ├── jsconfig.json

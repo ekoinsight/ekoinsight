@@ -28,37 +28,38 @@ func CreateEvent() gin.HandlerFunc {
 		eventData, existsFromCtx := c.Get("eventData")
 		if !existsFromCtx {
 			if err := c.BindJSON(&event); err != nil {
-				c.JSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				c.AbortWithStatusJSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 				return
 			}
 		} else {
 			event, ok = eventData.(models.Event)
 			if !ok {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid event data type"})
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Invalid event data type"})
 				return
 			}
 		}
 
 		if validationErr := validateEvent.Struct(&event); validationErr != nil {
-			c.JSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
+			c.AbortWithStatusJSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
 
 		newEvent := models.Event{
-			Id:      primitive.NewObjectID(),
-			Type:    event.Type,
-			UserId:  event.UserId,
-			Score:   event.Score,
-			Message: event.Message,
+			Id:        primitive.NewObjectID(),
+			Type:      event.Type,
+			UserId:    event.UserId,
+			Score:     event.Score,
+			Message:   event.Message,
+			CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
 		}
 
 		result, err := eventCollection.InsertOne(ctx, newEvent)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		c.JSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+		c.AbortWithStatusJSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
 	}
 }
 
@@ -73,11 +74,11 @@ func GetEvent() gin.HandlerFunc {
 
 		err := eventCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&event)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		c.JSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": event}})
+		c.AbortWithStatusJSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": event}})
 	}
 }
 
@@ -92,13 +93,13 @@ func EditEvent() gin.HandlerFunc {
 
 		//validateEvent the request body
 		if err := c.BindJSON(&event); err != nil {
-			c.JSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
 		//use the validator library to validateEvent required fields
 		if validationErr := validateEvent.Struct(&event); validationErr != nil {
-			c.JSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
+			c.AbortWithStatusJSON(http.StatusBadRequest, responses.EventResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
 
@@ -106,7 +107,7 @@ func EditEvent() gin.HandlerFunc {
 		result, err := eventCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
@@ -115,12 +116,12 @@ func EditEvent() gin.HandlerFunc {
 		if result.MatchedCount == 1 {
 			err := eventCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&updatedEvent)
 			if err != nil {
-				c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 				return
 			}
 		}
 
-		c.JSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedEvent}})
+		c.AbortWithStatusJSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedEvent}})
 	}
 }
 
@@ -135,18 +136,18 @@ func DeleteEvent() gin.HandlerFunc {
 		result, err := eventCollection.DeleteOne(ctx, bson.M{"id": objId})
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
 		if result.DeletedCount < 1 {
-			c.JSON(http.StatusNotFound,
+			c.AbortWithStatusJSON(http.StatusNotFound,
 				responses.EventResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "Event with specified ID not found!"}},
 			)
 			return
 		}
 
-		c.JSON(http.StatusOK,
+		c.AbortWithStatusJSON(http.StatusOK,
 			responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Event successfully deleted!"}},
 		)
 	}
@@ -161,7 +162,7 @@ func GetAllEvents() gin.HandlerFunc {
 		results, err := eventCollection.Find(ctx, bson.M{})
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
@@ -170,13 +171,13 @@ func GetAllEvents() gin.HandlerFunc {
 		for results.Next(ctx) {
 			var singleEvent models.Event
 			if err = results.Decode(&singleEvent); err != nil {
-				c.JSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			}
 
 			events = append(events, singleEvent)
 		}
 
-		c.JSON(http.StatusOK,
+		c.AbortWithStatusJSON(http.StatusOK,
 			responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": events}},
 		)
 	}
