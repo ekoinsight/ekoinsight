@@ -60,6 +60,7 @@ func CreateEvent() gin.HandlerFunc {
 		}
 
 		c.AbortWithStatusJSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+		return
 	}
 }
 
@@ -79,6 +80,7 @@ func GetEvent() gin.HandlerFunc {
 		}
 
 		c.AbortWithStatusJSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": event}})
+		return
 	}
 }
 
@@ -122,6 +124,7 @@ func EditEvent() gin.HandlerFunc {
 		}
 
 		c.AbortWithStatusJSON(http.StatusOK, responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedEvent}})
+		return
 	}
 }
 
@@ -150,6 +153,7 @@ func DeleteEvent() gin.HandlerFunc {
 		c.AbortWithStatusJSON(http.StatusOK,
 			responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Event successfully deleted!"}},
 		)
+		return
 	}
 }
 
@@ -180,5 +184,6 @@ func GetAllEvents() gin.HandlerFunc {
 		c.AbortWithStatusJSON(http.StatusOK,
 			responses.EventResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": events}},
 		)
+		return
 	}
 }

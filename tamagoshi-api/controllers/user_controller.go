@@ -50,6 +50,7 @@ func CreateUser() gin.HandlerFunc {
 		}
 
 		c.AbortWithStatusJSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+		return
 	}
 }
 
@@ -70,6 +71,7 @@ func GetUser() gin.HandlerFunc {
 
 		user.Health = 100
 		c.AbortWithStatusJSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
+		return
 	}
 }
 
@@ -113,6 +115,7 @@ func EditUser() gin.HandlerFunc {
 		}
 
 		c.AbortWithStatusJSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedUser}})
+		return
 	}
 }
 
@@ -141,6 +144,7 @@ func DeleteUser() gin.HandlerFunc {
 		c.AbortWithStatusJSON(http.StatusOK,
 			responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "User successfully deleted!"}},
 		)
+		return
 	}
 }
 
@@ -202,5 +206,6 @@ func FeedUser() gin.HandlerFunc {
 		eventHandler(c)
 
 		c.AbortWithStatusJSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
+		return
 	}
 }
