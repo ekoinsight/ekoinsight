@@ -8,7 +8,7 @@ type Event struct {
 	UserId    string             `json:"userId,omitempty" validate:"required"`
 	Score     int                `json:"score,omitempty" validate:"required"`
 	Message   string             `json:"message,omitempty" validate:"required"`
-	CreatedAt primitive.DateTime `json:"created_at,omitempty" validate:"required"`
+	CreatedAt primitive.DateTime `json:"created_at,omitempty"`
 }
 
 //
