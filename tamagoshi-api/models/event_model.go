@@ -10,5 +10,3 @@ type Event struct {
 	Message   string             `json:"message,omitempty" validate:"required"`
 	CreatedAt primitive.DateTime `json:"created_at,omitempty"`
 }
-
-//
