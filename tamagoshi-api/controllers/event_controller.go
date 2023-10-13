@@ -53,13 +53,13 @@ func CreateEvent() gin.HandlerFunc {
 			CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
 		}
 
-		result, err := eventCollection.InsertOne(ctx, newEvent)
+		_, err := eventCollection.InsertOne(ctx, newEvent)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, responses.EventResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		c.AbortWithStatusJSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+		c.AbortWithStatusJSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": newEvent}})
 		return
 	}
 }
