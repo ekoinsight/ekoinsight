@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"fmt"
 
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/configs"
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/models"
@@ -45,12 +46,12 @@ func CreateUser() gin.HandlerFunc {
 			Name: user.Name,
 			Mail: user.Mail,
 		}
-		errFindOne := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
+		errFindOne := userCollection.FindOne(ctx, bson.M{"id": user.Id}).Decode(&user)
 		if errFindOne != nil && errFindOne != mongo.ErrNoDocuments {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": errFindOne.Error()}})
 			return
-		} else {
-			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists", id)}})
+		} else if errFindOne == nil {
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists", user.Id)}})
 			return
 		}
 
