@@ -204,8 +204,6 @@ func FeedUser() gin.HandlerFunc {
 		c.Set("eventData", feedEvent)
 		eventHandler := CreateEvent()
 		eventHandler(c)
-
-		c.AbortWithStatusJSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 		return
 	}
 }
