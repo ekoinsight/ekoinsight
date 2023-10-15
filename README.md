@@ -51,17 +51,33 @@ _INSTRUCTIONS: Complete all required deliverable sections below._
 
 ### The issue we are hoping to solve
 
-REPLACE THIS SENTENCE with a short description, 2-3 sentences in length, of the specific sustainability problem your solution is meant to address.
+While formal education about recycling at school is great, cementing this education into daily habits for children requires something a little more dynamic and engaging. Drawing inspiration from the popular tamagotchi game, our app seeks to foster a sense of responsibility towards the environment by encouraging users to take care of their miniature planet-like pet to learn about sustainable practices.
 
 ### How our technology solution can help
 
-REPLACE THIS SENTENCE with a short description of your team's solution, in about 10 words.
+Interactive AI backed Tamagotchi-style app helping foster eco-responsibility and nurturing.
 
 ### Our idea
 
-INSTRUCTIONS: Replace this paragraph with a longer description of your solution. In about 500 words, describe your solution in more detail. Include the real-world problem you identified, describe the technological solution you have created, and explain how it’s an improvement over existing solutions. You can supply additional documentation in this source code repository that you link to as well.
+Many of us remember the hit pet caring simulation called Tamagotchi. This simple gadget grabbed the attention of a generation of children who were all thinking about how to take care of their pets on a daily basis. We aim to transfer that same devotion and attention but towards taking care of a digital pet planet earth. 
 
-More detail is available in our [description document](./docs/DESCRIPTION.md).
+While on the surface the fun comes from feeding and caring for a cute digital pet, on a deeper level we're looking to help keep sustainability at the top of their minds by having them continuously look for recyclable objects to feed their pets and having educational content in return in the form of their pet's reactions. 
+
+And instilling a habit of thinking about recycling has its benefits. Research reveals that students adhering to pro-environmental behaviors tend to be more actively involved in recycling. (https://www.mdpi.com/2673-4060/2/3/21). 
+
+Aiming for this age group is also ideal since early childhood education is particularly influential in shaping attitudes and values, making it a critical period for instilling sustainable practices (https://amshq.org/Blog/2023-05-24-Reduce-Reuse-Recycle-Environmental-Education-in-the-Montessori-Classroom).
+
+The creature will be brought to life with textual communications using Watson X and the Llama 2 model, customizable in look and fed via pictures of recyclable objects children can identify in the real world. 
+Using the Blip2 model we identify what's in the picture and pass that information along to the LLM which converts that into a score and an educational response for the creature to write back in any language.
+
+If the item is recyclable, the creature's health pool increases, and the creature responds in a happy manner with educational information regarding the item. If the item is not recyclable, then its health pool decreases and the creature responds in kind.  
+
+We intend to have more ways for the user to interact with the creation including full on conversations and push notifications to remind the user whenever the tiny pet planet is hungry.
+
+The AI and image recognition space is continuously improving and updating the creatures' performance and abilities would only be an api switch away.
+
+One thing of note (Up until a very recent pivot in idea, our team was called ekoinsight, so our repo and domain name will show the old name)
+
 
 ## Technology implementation
 
@@ -69,12 +85,9 @@ More detail is available in our [description document](./docs/DESCRIPTION.md).
 
 _INSTRUCTIONS: Included here is a list of commonly used IBM AI services. Remove any services you did not use, or add others from the linked catalog not already listed here. Leave only those included in your solution code. Provide details on where and how you used each IBM AI service to help judges review your implementation. Remove these instructions._
 
-- [IBM Natural Language Understanding](https://cloud.ibm.com/catalog/services/natural-language-understanding) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-- [Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-- [Watson Discovery](https://cloud.ibm.com/catalog/services/watson-discovery) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-- [Watson Speech to Text](https://cloud.ibm.com/catalog/services/speech-to-text) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-- [Watson Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-- List any additional [IBM AI services](https://cloud.ibm.com/catalog?category=ai#services) used or remove this line
+Watson X prompting using Llama 2 foundation model
+Querying the base model Llama 2 via python langchain to ask how sustainable a item given is and to reply back with a certain personality.
+(backend/ekoinsight/app.py calls the ApiWatsonX class)
 
 ### Other IBM technology used
 
@@ -103,9 +116,9 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 The project currently does the following things.
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Engages children to feed and take care of their pet earth creature, thus forming a habit of thinking about sustainability.
+- The user can send it pictures of recyclable material they see in real life, which is a novel way of tying
+- The earth pet educates the child based on whatever the child just fed it. 
 
 In the future we plan to...
 
