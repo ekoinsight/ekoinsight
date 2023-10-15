@@ -53,16 +53,9 @@ END
 Styrofoam Cup
 {'score': -8, 'reaction': "Yikes, Styrofoam cups. A -8 from me, they taste like a mouthful of squeaky packing peanuts. Plus, they're terrible for the environment. Avoid these if you can!"}
 END
-
-Banana Peel
-{'score': 9, 'reaction': "Banana peels! A solid 9 on the yum scale. They're biodegradable, and when composted, they enrich the soil. Way to go, nature!"}
-END
-
-Old Sock
-{'score': -10, 'reaction': "An old sock? Eww, that's a -10! I may be adaptable, but even I have limits. Socks don't belong in the recycling bin, buddy!"}
-END
-
 """
+
+
 
 
 pollution_prompt_template="""

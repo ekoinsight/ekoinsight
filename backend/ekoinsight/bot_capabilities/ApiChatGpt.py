@@ -19,6 +19,34 @@ class ApiChatGpt(ApiOpenAi):
     def set_language(self,language):
         self.language=language
 
+    def fetch_english_prompt(self,item="metal can",prompt_template='pollution_prompt_template',**kwargs):
+        llm = OpenAI(model_name="gpt-4",temperature=self.temperature,openai_api_key=self.api_key)
+        # prompt = PromptTemplate(
+        #     input_variables=["item"],
+        #     template=eval(prompt_template),
+        # )
+
+        if not self.dry_run:
+            prompt=eval(prompt_template)+f" {item} "
+            story=llm(prompt)
+            if self.as_string:
+                return story
+
+            filename=f"{item}_{story[:20].replace(' ','')}"
+            if len(filename)>250:
+                filename=filename[:250]
+
+            story_folder="pollution_scenes"
+            with open(f"{story_folder}/{filename}.txt", "w") as file:
+                # Write the string to the file
+                file.write(story)
+
+            print(f"pollution prompt saved at {story_folder}/{filename}.txt")
+            return story
+        
+        else:
+            return eval("dry_run_"+prompt_template)
+            
     def fetch_prompt(self,item="metal can",prompt_template='pollution_prompt_template',**kwargs):
         llm = OpenAI(model_name="gpt-4",temperature=self.temperature,openai_api_key=self.api_key)
         # prompt = PromptTemplate(

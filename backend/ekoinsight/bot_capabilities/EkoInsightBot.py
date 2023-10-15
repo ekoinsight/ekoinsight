@@ -40,23 +40,29 @@ class EkoInsightBot(BotClass):
         print(f"img identified took {time.time()-start}s : {self.identified_object}") #takes about 3 seconds
 
         start=time.time()
-        rationale=self.prompt_provider.fetch_prompt(item=self.identified_object,prompt_template='tamagotchi_personality',max_tokens=1000, stop_sequences= ["END"])
+        rationale=self.prompt_provider.fetch_english_prompt(item=self.identified_object,prompt_template='tamagotchi_personality',max_tokens=1000, stop_sequences= ["END"])
         print(f"rationale generated : took {time.time()-start}s")
 
-        print(f"rationale : {rationale}")
+        #print(f"rationale : {rationale}")
 
-        if self.language!="English":
-            rationale=self.prompt_provider.translate(rationale,self.language)
-            
+        answer_dict={"score":0,"reaction":"Not sure what I just ate..."}
+
         #watsonx needs all the help it can get
-        if score==0 or "score" in rationale:
-            start_index = rationale.find("{")
-            end_index = rationale.rfind("}") + 1
-            dictionary_string = rationale[start_index:end_index]
-            return eval(dictionary_string)
-        else:
-            return {"score":score,"rationale":rationale}
-
+        try:
+            answer_dict=eval(rationale)
+        except:
+            try:
+                start_index = rationale.find("{")
+                end_index = rationale.rfind("}") + 1
+                dictionary_string = rationale[start_index:end_index]
+                answer_dict= eval(dictionary_string)
+            except:
+                pass
+        
+        if self.language.lower()!="english":
+            answer_dict['reaction']=self.prompt_provider.translate(answer_dict['reaction'],self.language)
+        answer_dict['reaction']=answer_dict['reaction'].replace("'","").replace('"',"")
+        return answer_dict
 
     def execute(self,img_filename,img_path=None,language="English"):
         self.language=language

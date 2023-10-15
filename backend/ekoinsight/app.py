@@ -28,8 +28,8 @@ config_data=load_config()
 
 img_identifier=ApiBlipReplicate(dry_run=False)
 mask_provider=ApiSegEverythingReplicate(dry_run=False)
-prompt_provider=ApiChatGpt(dry_run=False)
-#prompt_provider=ApiWatsonX(dry_run=False)
+#prompt_provider=ApiChatGpt(dry_run=False)
+prompt_provider=ApiWatsonX(dry_run=False)
 img_provider=ApiImgDreamStudio(dry_run=False)
 
 #sfx_provider=ApiSfxReplicate(dry_run=False)
@@ -41,10 +41,16 @@ print("###### EkoInsightBot READY##########")
 input_dir=config_data['input_paths']['imgs']
 
 uploaded_image_filepath= None  # Initialize a global variable
+# language="french"
 
+# for filename in sorted(os.listdir(os.path.dirname("inputs/imgs/"))):
+#     if 'test' in filename:
+#         print(filename)
+#         answer=ekoinsightbot.feed(img_filename=filename,language=language)
+#         print(answer)
 
 @app.post("/feed/")
-async def identify_image(file: fastapi.UploadFile):
+async def identify_image(file: fastapi.UploadFile,language: str = "English"):
     print("upload detected")
     global uploaded_image_filepath  # Declare the global variable
 
@@ -61,9 +67,6 @@ async def identify_image(file: fastapi.UploadFile):
 
     with open(filepath, "wb") as image_file:
         image_file.write(file.file.read())
-
-    #YOU CAN PROVIDE ANY LANGUAGE YOU WANT FROM THE FRONT END AND PASS IT AS A VARIABLE IF YOU WANT
-    language="English"
 
     score_reaction_dict = ekoinsightbot.feed(img_filename=filename,img_path=input_dir,language=language)
     #score_reaction_dict looks like {'score':5,'reaction':'great, another can...'}
