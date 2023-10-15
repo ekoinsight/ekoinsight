@@ -31,26 +31,26 @@ function Counters() {
         <Grid container item xs={12} lg={9} sx={{ mx: "auto" }}>
           <Grid item xs={12} md={4}>
             <DefaultCounterCard
-              count={1}
-              title="Photograph"
-              description="Take an object from your surroundings. See where it may end up."
+              count={50}
+              title="Recycled Items"
+              description="Over 50 different recyclable items can keep your PlanetPal healthy and happy!"
             />
           </Grid>
           <Grid item xs={12} md={4} display="flex">
             <Divider orientation="vertical" sx={{ display: { xs: "none", md: "block" }, mx: 0 }} />
             <DefaultCounterCard
-              count={5}
+              count={3}
               suffix="+"
-              title="Data Points"
-              description="For each photograph you submit."
+              title="Meals"
+              description="Your Tamagotchi has a big appetite ! It can eat more than 3 times a day."
             />
             <Divider orientation="vertical" sx={{ display: { xs: "none", md: "block" }, ml: 0 }} />
           </Grid>
           <Grid item xs={12} md={4}>
             <DefaultCounterCard
-              count={1}
-              title="Groundbreaking idea"
-              description="In an everchanging world, submit your new idea on how better waste management can be achieved."
+              count={365}
+              title="Days of Clean Earth"
+              description="Make a daily habit of caring for your Tamagotchi for 365 days, and together, we'll keep the Earth clean and your Tamagotchi happy!"
             />
           </Grid>
         </Grid>

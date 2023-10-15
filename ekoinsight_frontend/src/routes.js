@@ -81,11 +81,11 @@ const routes = [
       },
     ],
   },
-  {
-    name: "Gallery",
-    icon: <CollectionsIcon />,
-    href: "https://www.github.com/creativetimofficial/material-kit-react",
-  },
+  // {
+  //   name: "Gallery",
+  //   icon: <CollectionsIcon />,
+  //   href: "https://www.github.com/creativetimofficial/material-kit-react",
+  // },
 ];
 
 export default routes;

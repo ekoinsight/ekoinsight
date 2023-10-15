@@ -43,12 +43,7 @@ function Profile(idToken) {
                 </MKButton>
               </MKBox>
               <MKTypography variant="body2" fontWeight="light" color="text">
-                The world is in need of your ideas. Take glass bottles for example. We all know they
-                should go in the recycling bin, yet they still produce a considerable amount of
-                waste. <br />
-                <br />
-                This is where you come in.<br /><br/>
-                Your idea can be as small or as big as you like. It can describe ways families can reduce their waste or make better use of glass bottles past their intended lifecycle, or perhaps it may change the way we deal with certain things on a global scale.
+                Good morning, Tamagotchi Keeper! Your PlanetPalz is thriving today. It woke up with a big smile, well-fed, and full of energy. It&apos;s been living a green and happy life with you! Keep up the fantastic work, and remember to nurture it with love and eco-friendly choices.
               </MKTypography>
             </Grid>
           </Grid>

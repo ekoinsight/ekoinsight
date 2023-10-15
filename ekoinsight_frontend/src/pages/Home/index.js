@@ -33,7 +33,7 @@ import Information from "pages/Home/sections/Information";
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/cardboard_bg.jpeg";
+import bgImage from "assets/images/planet_earth.jpg";
 
 function Home() {
   return (
@@ -79,7 +79,7 @@ function Home() {
                   },
                 })}
               >
-                EkoInsight
+                PlanetPalz
               </MKTypography>
               <MKTypography
                 variant="body1"
@@ -88,7 +88,7 @@ function Home() {
                 px={{ xs: 6, lg: 12 }}
                 mt={1}
               >
-                Photograph. Learn. Innovate.
+                Feed the Earth, nourish the future!
               </MKTypography>
             </MKBox>
           </Grid>
