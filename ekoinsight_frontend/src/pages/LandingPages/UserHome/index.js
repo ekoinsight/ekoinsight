@@ -47,8 +47,10 @@ function UserHome() {
 
   const idToken = CheckIsLoggedIn(data);
   console.log("idToken in userhome", idToken);
+  console.log(data.credential);
 
-  if (idToken) {
+
+  if (idToken && data.credential) {
     return (
       <>
         <DefaultNavbar
@@ -90,7 +92,7 @@ function UserHome() {
             }}
           >
             <Profile idToken={idToken} />
-            <Tamagotchi idToken={idToken} />
+            <Tamagotchi idToken={idToken} apiCred={data.credential}/>
           </Card>
         </MKBox>
       </>
