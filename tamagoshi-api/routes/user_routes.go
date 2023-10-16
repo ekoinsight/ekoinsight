@@ -2,7 +2,6 @@ package routes
 
 import (
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/controllers"
-
 	"github.com/gin-gonic/gin"
 )
 
