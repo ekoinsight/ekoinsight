@@ -24,6 +24,7 @@ import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 
 // UserHome page sections
 import Profile from "pages/LandingPages/UserHome/sections/Profile";
+import Tamagotchi from "pages/LandingPages/UserHome/sections/Tamagotchi";
 import Posts from "pages/LandingPages/UserHome/sections/Posts";
 import Contact from "pages/LandingPages/UserHome/sections/Contact";
 import Footer from "pages/LandingPages/UserHome/sections/Footer";
@@ -81,7 +82,7 @@ function UserHome() {
               p: 2,
               mx: { xs: 2, lg: 3 },
               mt: -8,
-              mb: 4,
+              mb: 1,
               backgroundColor: ({ palette: { white }, functions: { rgba } }) =>
                 rgba(white.main, 0.8),
               backdropFilter: "saturate(200%) blur(30px)",
@@ -89,6 +90,7 @@ function UserHome() {
             }}
           >
             <Profile idToken={idToken} />
+            <Tamagotchi idToken={idToken} />
           </Card>
         </MKBox>
       </>

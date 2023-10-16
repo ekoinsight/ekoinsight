@@ -28,23 +28,20 @@ function Profile(idToken) {
   // TODO: Can only get this working with the nesting
   const profile = idToken.idToken;
   return (
-    <MKBox component="section" py={{ xs: 6, sm: 12 }}>
+    <MKBox component="section" mb={0} pb={0} pt={{ xs: 6, sm: 12 }}>
       <Container>
-        <Grid container item xs={12} justifyContent="center" mx="auto">
-          <MKBox mt={{ xs: -16, md: -20 }} textAlign="center">
+        <Grid container item xs={12} justifyContent="center">
+          <MKBox mt={{ xs: 0, md: -20 }} mb={0} textAlign="center">
             <MKAvatar src={profile.picture} alt="profile picture" size="xxl" shadow="xl" />
           </MKBox>
-          <Grid container justifyContent="center" py={6}>
+          <Grid container justifyContent="center" py={2}>
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
-              <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+              <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={0}>
                 <MKTypography variant="h3">Welcome {profile.given_name} !</MKTypography>
-                <MKButton variant="outlined" color="info" size="small">
+                {/* <MKButton variant="outlined" color="info" size="small">
                   Start now !
-                </MKButton>
+                </MKButton> */}
               </MKBox>
-              <MKTypography variant="body2" fontWeight="light" color="text">
-                Good morning, Tamagotchi Keeper! Your PlanetPalz is thriving today. It woke up with a big smile, well-fed, and full of energy. It&apos;s been living a green and happy life with you! Keep up the fantastic work, and remember to nurture it with love and eco-friendly choices.
-              </MKTypography>
             </Grid>
           </Grid>
         </Grid>
