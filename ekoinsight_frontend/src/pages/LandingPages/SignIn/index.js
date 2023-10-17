@@ -73,9 +73,10 @@ export function CheckIsLoggedIn(data) {
 function SignInBasic() {
   const navigate = useNavigate();
   const [googleUser, setGoogleUser] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
+  const [tamaUser, setTamaUser] = useState([]);
+  // const [userProfile, setUserProfile] = useState([]);
   console.log(googleUser);
-  console.log(userProfile);
+  // console.log(userProfile);
 
   const handleSuccessLogin = (resp) => {
     setGoogleUser(resp);
@@ -149,11 +150,11 @@ function SignInBasic() {
                     onSuccess={handleSuccessLogin}
                     onError={handleErrorLogin}
                   />
-                  <MKBox textAlign="center" mt={4} mb={1}>
+                  {/* <MKBox textAlign="center" mt={4} mb={1}>
                     <MKButton onClick={handleLogout} size="small" variant="gradient" color="info">
                       Logout
                     </MKButton>
-                  </MKBox>
+                  </MKBox> */}
                   <MKBox mt={3} mb={1} textAlign="center"></MKBox>
                 </MKBox>
               </MKBox>

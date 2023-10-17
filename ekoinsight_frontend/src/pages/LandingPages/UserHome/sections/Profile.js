@@ -28,28 +28,20 @@ function Profile(idToken) {
   // TODO: Can only get this working with the nesting
   const profile = idToken.idToken;
   return (
-    <MKBox component="section" py={{ xs: 6, sm: 12 }}>
+    <MKBox component="section" mb={0} pb={0} pt={{ xs: 6, sm: 12 }}>
       <Container>
-        <Grid container item xs={12} justifyContent="center" mx="auto">
-          <MKBox mt={{ xs: -16, md: -20 }} textAlign="center">
+        <Grid container item xs={12} justifyContent="center">
+          <MKBox mt={{ xs: 0, md: -20 }} mb={0} textAlign="center">
             <MKAvatar src={profile.picture} alt="profile picture" size="xxl" shadow="xl" />
           </MKBox>
-          <Grid container justifyContent="center" py={6}>
+          <Grid container justifyContent="center" py={2}>
             <Grid item xs={12} md={7} mx={{ xs: "auto", sm: 6, md: 1 }}>
-              <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+              <MKBox display="flex" justifyContent="space-between" alignItems="center" mb={0}>
                 <MKTypography variant="h3">Welcome {profile.given_name} !</MKTypography>
-                <MKButton variant="outlined" color="info" size="small">
-                  Add create new idea here
-                </MKButton>
+                {/* <MKButton variant="outlined" color="info" size="small">
+                  Start now !
+                </MKButton> */}
               </MKBox>
-              <MKTypography variant="body2" fontWeight="light" color="text">
-                The world is in need of your ideas. Take glass bottles for example. We all know they
-                should go in the recycling bin, yet they still produce a considerable amount of
-                waste. <br />
-                <br />
-                This is where you come in.<br /><br/>
-                Your idea can be as small or as big as you like. It can describe ways families can reduce their waste or make better use of glass bottles past their intended lifecycle, or perhaps it may change the way we deal with certain things on a global scale.
-              </MKTypography>
             </Grid>
           </Grid>
         </Grid>

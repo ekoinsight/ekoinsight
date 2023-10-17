@@ -51,7 +51,7 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": errFindOne.Error()}})
 			return
 		} else if errFindOne == nil {
-			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists", user.Id)}})
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists", )}})
 			return
 		}
 
@@ -73,6 +73,7 @@ func GetUser() gin.HandlerFunc {
 		defer cancel()
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
+
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}

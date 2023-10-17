@@ -42,21 +42,19 @@ function Information() {
                 icon="touch_app"
                 title={
                   <>
-                    Get
-                    <br />
-                    Inspired.
+                    Set the table !
                   </>
                 }
-                description="Other users have already submitted their photos along with some awesome new ideas. Get inspired and share your EkoInsights !"
+                description="Keeping your Tamagotchi happy means keeping our Earth happy too !"
               />
               <RotatingCardBack
                 image={bgBack}
-                title="Upvote the best ideas"
-                description="Reward creativity !"
+                title="Time to meet your new friend"
+                description="Start now."
                 action={{
                   type: "internal",
-                  route: "/sections/page-sections/page-headers",
-                  label: "Gallery",
+                  route: "/pages/authentication/sign-in",
+                  label: "Sign In",
                 }}
               />
             </RotatingCard>
@@ -90,7 +88,7 @@ function Information() {
                 <DefaultInfoCard
                   icon="lightbulb"
                   title="Time for Something New"
-                  description="New schools of thought, like circular economies, are gaining traction. Pitch in, and share your news ideas for a brighter future."
+                  description="Feed your Tamagotchi, and keep your environment clean !"
                 />
               </Grid>
             </Grid>
