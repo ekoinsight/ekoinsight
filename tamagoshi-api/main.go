@@ -12,6 +12,7 @@ func main() {
 	router := gin.Default()
 	router.Use(middlewares.VerifyToken())
 
+
 	//run database
 	configs.ConnectDB()
 

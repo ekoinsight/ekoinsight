@@ -18,6 +18,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"google.golang.org/api/idtoken"
+
 )
 
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
@@ -68,16 +70,50 @@ func CreateUser() gin.HandlerFunc {
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		
 		userId := c.Param("userId")
 		var user models.User
 		defer cancel()
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
+			if err == mongo.ErrNoDocuments {
+				err = nil
+				defer cancel()
+				tokenData := c.MustGet("tokenContent")
+				token, ok := tokenData.(*idtoken.Payload)
+				if !ok {
+					c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+					return
+				} else {
+					var name, email, sub string
+					if value, ok := token.Claims["sub"].(string); ok {
+						sub = value
+					}
+					if value, ok := token.Claims["name"].(string); ok {
+						name = value
+					}
+					if value, ok := token.Claims["email"].(string); ok {
+						// 'value' is now the extracted string
+						email = value
+					}
 
+					newUser := models.User{
+						Id:   sub,
+						Name: name,
+						Mail: email,
+					}
+					result, err := userCollection.InsertOne(ctx, newUser)
+					if err != nil {
+						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+						return
+					}
+					c.JSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+					return
+				}
+			}
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
 		user.Health = 100
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 	}
