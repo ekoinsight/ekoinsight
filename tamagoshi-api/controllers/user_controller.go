@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"time"
@@ -275,14 +277,34 @@ func FeedUser() gin.HandlerFunc {
 			return
 		}
 		defer file.Close()
+
+		body := &bytes.Buffer{}
+		writer := multipart.NewWriter(body)
+		part, err := writer.CreateFormFile("", "uploads/"+header.Filename)
+		if err != nil {
+			log.Printf("Error closing create buffer from file: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		_, err = io.Copy(part, file)
+		if err != nil {
+			log.Printf("Error closing reader file: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		err = writer.Close()
+		if err != nil {
+			log.Printf("Error closing reader file: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
 		req, err := http.NewRequest("POST", fmt.Sprintf("%v/feed", configs.EnvBackendUrl()), file)
 		if err != nil {
 			log.Printf("Error creating request to ekoinsight backend API: %s", err.Error())
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		req.Header.Set("Content-Type", "multipart/form-data")
-
+		req.Header.Set("Content-Type", writer.FormDataContentType())
 		log.Printf("Send request %v to backend: %s", req, configs.EnvBackendUrl())
 		client := &http.Client{}
 
