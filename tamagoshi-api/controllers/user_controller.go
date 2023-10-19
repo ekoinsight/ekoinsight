@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
-	"io/ioutil"
 
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/configs"
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/models"
@@ -20,7 +20,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/api/idtoken"
-
 )
 
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
@@ -54,7 +53,7 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": errFindOne.Error()}})
 			return
 		} else if errFindOne == nil {
-			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists", )}})
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists")}})
 			return
 		}
 
@@ -71,7 +70,7 @@ func CreateUser() gin.HandlerFunc {
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		
+
 		userId := c.Param("userId")
 		var user models.User
 		defer cancel()
@@ -222,13 +221,13 @@ func FeedUser() gin.HandlerFunc {
 		userId := c.Param("userId")
 		var user models.User
 		defer cancel()
-		
+
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		err = c.Request.ParseMultipartForm(100 * 1024 * 1024) 
+		err = c.Request.ParseMultipartForm(100 * 1024 * 1024)
 		if err != nil {
 			log.Printf("Error ParseMultipartForm : %s", err.Error())
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -248,11 +247,9 @@ func FeedUser() gin.HandlerFunc {
 			if err != nil {
 				log.Printf("Error creating upload folder: %s", err.Error())
 				c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-				return 
+				return
 			}
 		}
-
-		
 
 		out, err := os.Create("uploads/" + header.Filename)
 		if err != nil {
@@ -278,7 +275,7 @@ func FeedUser() gin.HandlerFunc {
 			return
 		}
 		defer file.Close()
-		req, err := http.NewRequest("POST", "http://ekoinsight-backend-svc.ekoinsight.svc.cluster.local:8000/feed", file)
+		req, err := http.NewRequest("POST", fmt.Sprintf("%v/feed", configs.EnvBackendUrl()), file)
 		if err != nil {
 			log.Printf("Error creating request to ekoinsight backend API: %s", err.Error())
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -286,6 +283,7 @@ func FeedUser() gin.HandlerFunc {
 		}
 		req.Header.Set("Content-Type", "application/octet-stream")
 
+		log.Printf("Send request %v to backend: %s", req, configs.EnvBackendUrl())
 		client := &http.Client{}
 
 		resp, err := client.Do(req)
@@ -310,7 +308,6 @@ func FeedUser() gin.HandlerFunc {
 
 		// Log the response body
 		log.Printf("API Response Body: %s", string(responseBody))
-
 
 		feedEvent := models.Event{
 			Type:      "Feed",
