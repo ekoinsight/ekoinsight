@@ -280,7 +280,7 @@ func FeedUser() gin.HandlerFunc {
 
 		body := &bytes.Buffer{}
 		writer := multipart.NewWriter(body)
-		part, err := writer.CreateFormFile("", "uploads/"+header.Filename)
+		part, err := writer.CreateFormFile("file", "uploads/"+header.Filename)
 		if err != nil {
 			log.Printf("Error closing create buffer from file: %s", err.Error())
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -305,7 +305,7 @@ func FeedUser() gin.HandlerFunc {
 			return
 		}
 		req.Header.Set("Content-Type", writer.FormDataContentType())
-		log.Printf("Send request %v to backend: %s", req, configs.EnvBackendUrl())
+		log.Printf("Send request %v to backend: %s", req.Header, configs.EnvBackendUrl())
 		client := &http.Client{}
 
 		resp, err := client.Do(req)
