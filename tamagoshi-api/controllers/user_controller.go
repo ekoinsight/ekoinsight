@@ -221,6 +221,7 @@ func FeedUser() gin.HandlerFunc {
 		userId := c.Param("userId")
 		var user models.User
 		defer cancel()
+		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 100*1024*1024) // 100 MB limit
 
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
