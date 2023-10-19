@@ -221,14 +221,18 @@ func FeedUser() gin.HandlerFunc {
 		userId := c.Param("userId")
 		var user models.User
 		defer cancel()
-		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 100*1024*1024) // 100 MB limit
-
+		
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
+		err = c.Request.ParseMultipartForm(100 * 1024 * 1024) 
+		if err != nil {
+			log.Printf("Error ParseMultipartForm : %s", err.Error())
+			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
 		file, header, err := c.Request.FormFile("file")
 		if err != nil {
 			log.Printf("Error retrieving file from request: %s", err.Error())
