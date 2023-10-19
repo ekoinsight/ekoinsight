@@ -298,7 +298,7 @@ func FeedUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		req, err := http.NewRequest("POST", fmt.Sprintf("%v/feed", configs.EnvBackendUrl()), file)
+		req, err := http.NewRequest("POST", fmt.Sprintf("%v/feed", configs.EnvBackendUrl()), body)
 		if err != nil {
 			log.Printf("Error creating request to ekoinsight backend API: %s", err.Error())
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
