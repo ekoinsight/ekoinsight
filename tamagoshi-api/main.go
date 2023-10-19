@@ -14,6 +14,8 @@ func main() {
 	router.Use(middlewares.VerifyToken())
 
 	config := cors.DefaultConfig()
+  config.AllowAllOrigins = true
+
 	router.Use(cors.New(config))
 
 	//run database
