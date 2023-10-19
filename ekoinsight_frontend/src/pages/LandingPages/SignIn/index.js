@@ -73,8 +73,6 @@ export function CheckIsLoggedIn(data) {
 function SignInBasic() {
   const navigate = useNavigate();
   const [googleUser, setGoogleUser] = useState([]);
-  const [tamaUser, setTamaUser] = useState([]);
-  // const [userProfile, setUserProfile] = useState([]);
   console.log(googleUser);
   // console.log(userProfile);
 

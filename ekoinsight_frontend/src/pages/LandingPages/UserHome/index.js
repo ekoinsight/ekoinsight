@@ -46,11 +46,12 @@ function UserHome() {
   console.log(data);
 
   const idToken = CheckIsLoggedIn(data);
-  console.log("idToken in userhome", idToken);
-  console.log(data.credential);
+
 
 
   if (idToken && data.credential) {
+    console.log("idToken in userhome", idToken);
+    console.log(data.credential);
     return (
       <>
         <DefaultNavbar

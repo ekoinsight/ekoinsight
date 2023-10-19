@@ -43,6 +43,32 @@ function Tamagotchi(props) {
   console.log("bearer below");
   console.log(bearer);
   const [file, setFile] = useState();
+  const [backendUser, setBackendUser] = useState();
+
+  try {
+    event.preventDefault();
+    const url = `https://api.ekoinsight.ca/user/${profile.sub}`;
+    const config = {
+      headers: {
+        Authorization: bearer,
+        Accept: "("
+      },
+    };
+    axios
+      .get(url, config)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        window.alert("Retrieving your profile failed :( ! Please try again later.");
+        console.log("error below from axios");
+        console.log(error.toJSON());
+      });
+  } catch (error) {
+    console.error("Error below");
+    console.error(error);
+    window.alert("Retrieving your profile failed :( Please try again later.");
+  }
 
   console.log("profile", profile);
 
