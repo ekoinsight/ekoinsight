@@ -230,13 +230,16 @@ func FeedUser() gin.HandlerFunc {
 
 		file, header, err := c.Request.FormFile("file")
 		if err != nil {
+			log.Printf("Error retrieving file from request: %s", err.Error())
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 		defer file.Close()
+		log.Printf("File uploaded: %s (Size: %d bytes)", header.Filename, header.Size)
 		out, err := os.Create("uploads/" + header.Filename)
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("Error creating file: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 		defer out.Close()
@@ -244,7 +247,8 @@ func FeedUser() gin.HandlerFunc {
 		// Copy the file data to the new file
 		_, err = io.Copy(out, file)
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("Error copying file data: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 		// TODO query backend to determine feed score
