@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/configs"
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/routes" 
-	"github.com/ekoinsight/ekoinsight/tamagoshi-api/middlewares"
 	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.Use(middlewares.VerifyToken())
+	
 
 	config := cors.DefaultConfig()
   config.AllowOrigins = []string{"https://*.ekoinsight.ca", "https://ekoinsight.ca"}
