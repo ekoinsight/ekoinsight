@@ -241,6 +241,16 @@ func FeedUser() gin.HandlerFunc {
 		}
 		defer file.Close()
 		log.Printf("File uploaded: %s (Size: %d bytes)", header.Filename, header.Size)
+		uploadDir := "uploads"
+		if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+			err = os.MkdirAll(uploadDir, os.ModePerm)
+			if err != nil {
+				log.Printf("Error creating upload folder: %s", err.Error())
+				c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				return 
+			}
+		}
+
 		out, err := os.Create("uploads/" + header.Filename)
 		if err != nil {
 			log.Printf("Error creating file: %s", err.Error())
