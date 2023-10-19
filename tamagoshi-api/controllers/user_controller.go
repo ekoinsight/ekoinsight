@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/configs"
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/models"
@@ -251,6 +252,8 @@ func FeedUser() gin.HandlerFunc {
 			}
 		}
 
+		
+
 		out, err := os.Create("uploads/" + header.Filename)
 		if err != nil {
 			log.Printf("Error creating file: %s", err.Error())
@@ -267,7 +270,47 @@ func FeedUser() gin.HandlerFunc {
 			return
 		}
 		// TODO query backend to determine feed score
-		// TODO delete file
+
+		file, err = os.Open("uploads/" + header.Filename)
+		if err != nil {
+			log.Printf("Error opening file: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		defer file.Close()
+		req, err := http.NewRequest("POST", "http://ekoinsight-backend-svc.ekoinsight.svc.cluster.local:8000/feed", file)
+		if err != nil {
+			log.Printf("Error creating request to ekoinsight backend API: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		req.Header.Set("Content-Type", "application/octet-stream")
+
+		client := &http.Client{}
+
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Printf("Error querying to ekoinsight backend API: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			log.Printf("Error from ekoinsight backend API: status not ok")
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		responseBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Printf("Error reading backend body content: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+		// Log the response body
+		log.Printf("API Response Body: %s", string(responseBody))
+
 
 		feedEvent := models.Event{
 			Type:      "Feed",
