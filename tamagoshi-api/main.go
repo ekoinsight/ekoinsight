@@ -14,8 +14,6 @@ func main() {
 	router.Use(middlewares.VerifyToken())
 
 	config := cors.DefaultConfig()
-  config.AllowOrigins = []string{"https://*.ekoinsight.ca", "https://ekoinsight.ca"}
-
 	router.Use(cors.New(config))
 
 	//run database
