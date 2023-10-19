@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 
 import fastapi
 from fastapi.responses import JSONResponse
@@ -8,7 +9,7 @@ from bot_capabilities.ApiBlipReplicate import ApiBlipReplicate
 from bot_capabilities.ApiSegEverythingReplicate import ApiSegEverythingReplicate
 from bot_capabilities.EkoInsightBot import EkoInsightBot
 from bot_capabilities.ApiWatsonX import ApiWatsonX
-app = fastapi.FastAPI()
+app = fastapi.FastAPI(debug=True)
 
 def load_config():
     CONFIG_ENV=os.getenv("CONFIG_ENV","qa-local")
@@ -46,14 +47,29 @@ async def identify_image(file: fastapi.UploadFile,language: str = "English"):
     print(f"filename : {filename}")
     print(f"input_dir : {input_dir}")
 
+    filepath = os.path.join(input_dir, filename)
+
+    with open(filepath, "wb") as image_file:
+        image_file.write(file.file.read())
+
     score_reaction_dict = ekoinsightbot.feed(img_filename=filename,img_path=input_dir,language=language)
+
+    try:
+        os.remove(filepath)
+    except FileNotFoundError:
+        pass
 
     print(score_reaction_dict)
     return JSONResponse(content=score_reaction_dict, status_code=200)
 
 
+logging.basicConfig(level=logging.DEBUG)   # add this line
+logger = logging.getLogger("foo")
+
 if __name__ == "__main__":
     import uvicorn
+    logging.basicConfig(level=logging.DEBUG)   # add this line
+    logger = logging.getLogger()
     uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=4, log_level="debug")
 
 
