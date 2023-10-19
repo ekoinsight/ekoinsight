@@ -281,7 +281,7 @@ func FeedUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		req.Header.Set("Content-Type", "application/octet-stream")
+		req.Header.Set("Content-Type", "multipart/form-data")
 
 		log.Printf("Send request %v to backend: %s", req, configs.EnvBackendUrl())
 		client := &http.Client{}
