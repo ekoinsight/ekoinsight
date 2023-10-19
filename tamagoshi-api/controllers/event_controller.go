@@ -59,7 +59,7 @@ func CreateEvent() gin.HandlerFunc {
 			return
 		}
 
-		c.AbortWithStatusJSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": newEvent}})
+		c.JSON(http.StatusCreated, responses.EventResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": newEvent}})
 		return
 	}
 }
