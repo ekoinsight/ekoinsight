@@ -54,6 +54,6 @@ async def identify_image(file: fastapi.UploadFile,language: str = "English"):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=10)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, workers=4)
 
 
