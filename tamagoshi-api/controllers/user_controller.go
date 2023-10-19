@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"encoding/json"
 
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/configs"
 	"github.com/ekoinsight/ekoinsight/tamagoshi-api/models"
@@ -58,7 +59,7 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": fmt.Errorf("User %v already exists")}})
 			return
 		}
-
+		
 		result, err := userCollection.InsertOne(ctx, newUser)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -104,22 +105,82 @@ func GetUser() gin.HandlerFunc {
 						Name: name,
 						Mail: email,
 					}
-					result, err := userCollection.InsertOne(ctx, newUser)
+					_, err := userCollection.InsertOne(ctx, newUser)
 					if err != nil {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 						return
 					}
-					c.JSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
+					err = userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
+					if err != nil {
+						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+						return
+					}
+					user.Health, err = UserHealth(userId)
+					if err != nil {
+						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+						return 
+					}
+					c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 					return
 				}
 			}
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		user.Health = 100
+		user.Health, err = UserHealth(userId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return 
+		}
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 	}
 }
+
+func UserHealth(id string) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	var events []models.Event
+	defer cancel()
+
+	
+	// Lookup all Feed events of user (id) in the last 48 hours
+	filter := bson.M{
+		"userId": bson.M{
+			"$eq": id, 
+		},
+		"type": bson.M{
+			"$eq": "Feed",
+		},
+		"CreatedAt": bson.M{
+			"$gte": time.Now().Add(-48 * time.Hour),
+		},
+	}
+	results, err := eventCollection.Find(ctx, filter)
+	if err != nil {
+		return -1, err
+	}
+	//reading from the db in an optimal way
+	defer results.Close(ctx)
+	for results.Next(ctx) {
+		var singleEvent models.Event
+		if err = results.Decode(&singleEvent); err != nil {
+			return -1, err
+		}
+
+		events = append(events, singleEvent)
+	}
+	userScore := 0
+	if err != nil {
+		return -1, err
+	}
+	for _, event := range events {
+		userScore += event.Score
+	}
+	
+	if userScore < 0 {
+		userScore = 0
+	}
+	return userScore, nil
+} 
 
 func EditUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -215,6 +276,11 @@ func GetAllUsers() gin.HandlerFunc {
 			responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": users}},
 		)
 	}
+}
+
+type FeedEventStruct struct {
+	Score int `json:"score"`
+	Reaction string `json:"reaction"`
 }
 
 func FeedUser() gin.HandlerFunc {
@@ -328,14 +394,25 @@ func FeedUser() gin.HandlerFunc {
 			return
 		}
 
+
+		var feedEventResp FeedEventStruct
+
+		// Unmarshal the JSON into your struct
+		err = json.Unmarshal(responseBody, &feedEventResp)
+		if err != nil {
+			log.Printf("Error unmarshalling backend body content: %s", err.Error())
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
 		// Log the response body
 		log.Printf("API Response Body: %s", string(responseBody))
 
 		feedEvent := models.Event{
 			Type:      "Feed",
 			UserId:    userId,
-			Score:     10,
-			Message:   "Random message",
+			Score:     feedEventResp.Score,
+			Message:   feedEventResp.Reaction,
 			CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
 		}
 		c.Set("eventData", feedEvent)
