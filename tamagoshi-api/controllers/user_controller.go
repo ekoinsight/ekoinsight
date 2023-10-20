@@ -156,7 +156,7 @@ func UserHealth(id string) (int, error) {
 		"userId": id,
 		"type": "Feed",
 		"createdat": bson.M{
-			"$gte": time.Now().Add(-48 * time.Hour),
+			"$gte": primitive.NewDateTimeFromTime(time.Now().Add(-48 * time.Hour)),
 		},
 	}
 	results, err := eventCollection.Find(ctx, filter)
