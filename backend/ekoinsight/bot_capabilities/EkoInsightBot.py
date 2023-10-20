@@ -43,11 +43,8 @@ class EkoInsightBot(BotClass):
         rationale=self.prompt_provider.fetch_english_prompt(item=self.identified_object,prompt_template='tamagotchi_personality',max_tokens=1000, stop_sequences= ["END"])
         print(f"rationale generated : took {time.time()-start}s")
 
-        #print(f"rationale : {rationale}")
-
         answer_dict={"score":0,"reaction":"Not sure what I just ate..."}
 
-        #watsonx needs all the help it can get
         try:
             answer_dict=eval(rationale)
         except:
