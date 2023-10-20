@@ -111,8 +111,8 @@ For the best experience, choose the "add to home" option on your phone browser t
 
 ### Authors
 
-<a href="https://github.com/Call-for-Code/Project-Sample/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=Call-for-Code/Project-Sample" />
+<a href="https://github.com/ekoinsight/ekoinsight/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=ekoinsight/ekoinsight" />
 </a>
 
 - **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
