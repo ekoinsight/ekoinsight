@@ -1,12 +1,3 @@
-# IBM template below
-
-
-[![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Community](https://img.shields.io/badge/Join-Community-blue)](https://developer.ibm.com/callforcode/solutions/projects/get-started/)
-
-_INSTRUCTIONS: This GitHub repository serves as a template you can use to create a new project for the [2023 Call for Code Global Challenge](https://developer.ibm.com/callforcode/global-challenge/). Use the **Use this template** button to create a new version of this repository and start entering content for your own Call for Code submission project. Make sure you have [registered for the 2023 Call for Code Global Challenge](https://developer.ibm.com/callforcode/global-challenge/register/) to access resources and full project submission instructions. Remove any "INSTRUCTIONS" sections when you are ready to submit your project._
-
-_New to Git and GitHub? This free online course will get you up to speed quickly: [Getting Started with Git and GitHub](https://www.coursera.org/learn/getting-started-with-git-and-github)_.
-
 # PlanetPalz (previously known as ekoinsight)
 
 - [Project summary](#project-summary)
@@ -30,8 +21,6 @@ _New to Git and GitHub? This free online course will get you up to speed quickly
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
 
-_INSTRUCTIONS: Complete all required deliverable sections below._
-
 ## Project summary
 
 ### The issue we are hoping to solve
@@ -48,35 +37,35 @@ Many of us remember the hit pet caring simulation called Tamagotchi. This simple
 
 While on the surface the fun comes from feeding and caring for a cute digital pet, on a deeper level we're looking to help keep sustainability at the top of their minds by having them continuously look for recyclable objects to feed their pets and having educational content in return in the form of their pet's reactions. 
 
-And instilling a habit of thinking about recycling has its benefits. Research reveals that students adhering to pro-environmental behaviors tend to be more actively involved in recycling. (https://www.mdpi.com/2673-4060/2/3/21). 
+Furthermore, instilling a habit of thinking about recycling has its benefits. Research reveals that students adhering to pro-environmental behaviors tend to be more actively involved in recycling. (https://www.mdpi.com/2673-4060/2/3/21). 
 
 Aiming for this age group is also ideal since early childhood education is particularly influential in shaping attitudes and values, making it a critical period for instilling sustainable practices (https://amshq.org/Blog/2023-05-24-Reduce-Reuse-Recycle-Environmental-Education-in-the-Montessori-Classroom).
 
-The creature will be brought to life with textual communications using Watson X and the Llama 2 model, customizable in look and fed via pictures of recyclable objects children can identify in the real world. 
-Using the Blip2 model we identify what's in the picture and pass that information along to the LLM which converts that into a score and an educational response for the creature to write back. At the moment it's only in English due to lack of time but we are very close to allow a response in any language.
+The creature is brought to life with textual communications using Watson X and the Llama 2 model, customizable in look (coming soon) and fed by children uploading pictures of recyclable objects from their the real world surroundings. 
 
-If the item is recyclable, the creature's health pool increases, and the creature responds in a happy manner with educational information regarding the item. If the item is not recyclable, then its health pool decreases and the creature responds in kind.  
+With the Blip2 model, we have the capability to discern the contents of an image and relay this data to the LLM. The LLM then processes this information, generating a score and providing an educational response for the creature to compose in return. Currently, this feature is available exclusively in English for our MVP1 version. However, we are in the final stages of development to include support for multiple languages, aiming to ensure our app's accessibility to a diverse global audience.
 
-We intend to have more ways for the user to interact with the creation including full on conversations and push notifications to remind the user whenever the tiny pet planet is hungry.
+When an item is deemed recyclable, the creature's well-being is bolstered, leading to a joyful response and the delivery of educational insights about the item. Notably, the creature's physical appearance also undergoes dynamic changes. Conversely, if an item is non-recyclable, the creature's health deteriorates, resulting in a more somber response.
 
-The AI and image recognition space is continuously improving and updating the creatures' performance and abilities would only be an api switch away.
+Our plan encompasses an expansion of user interaction options, ranging from engaging in full-fledged conversations with the creature to receiving push notifications that remind users when the tiny pet planet is in need of sustenance.
 
-One thing of note (Up until a very recent pivot in idea, our team was called ekoinsight, so our repo and domain name will show the old name)
+It's worth acknowledging the evolving nature of AI and image recognition. Enhancing and updating the creature's performance and capabilities can be accomplished seamlessly through a simple API switch.
+
+As a side note, our team underwent a recent shift in our concept, and as a result, our repository and domain name may still display our previous name, "ekoinsight."
 
 
 ## Technology implementation
 
 ### IBM AI service(s) used
 
-_INSTRUCTIONS: Included here is a list of commonly used IBM AI services. Remove any services you did not use, or add others from the linked catalog not already listed here. Leave only those included in your solution code. Provide details on where and how you used each IBM AI service to help judges review your implementation. Remove these instructions._
-
-Watson X prompting using Llama 2 foundation model
-Querying the base model Llama 2 via python langchain to ask how sustainable a item given is and to reply back with a certain personality.
-(backend/ekoinsight/app.py calls the ApiWatsonX class)
+Utilizing the Llama 2 foundation model, the Watson X system employs prompts to interact with it. It employs Python Langchain to communicate with the underlying Llama 2 base model. The primary purpose of this interaction is to inquire about the sustainability of an item and receive a response imbued with a specific personality. This functionality is triggered by invoking the ApiWatsonX class in the "backend/ekoinsight/app.py" module.
 
 ### Other IBM technology used
 
-INSTRUCTIONS: List any other IBM technology used in your solution and describe how each component was used. If you can provide links to/details on exactly where these were used in your code, that would help the judges review your submission.
+Our infrastructure provisioning relies on the IBM virtual private cloud using the service  'Virtual Server for VPC.' We maintain two distinct machines for distinct purposes: one dedicated to development and the other serving as the host for user-facing infrastructure. Each of these machines is equipped with a configuration featuring 4 vCPUs and 16 GiB of memory.
+
+To enable routing to our virtual private cloud, we employ the "Floating IP for VPC" service. Through this service, we have allocated two user-accessible IP addresses for our VPC machines.
+
 
 ### Solution architecture
 
