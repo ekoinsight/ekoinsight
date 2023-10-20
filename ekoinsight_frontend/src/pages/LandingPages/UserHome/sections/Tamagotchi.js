@@ -50,7 +50,7 @@ function TamaProgressBar(props) {
   } else if (score > 25 && score <= 50) {
     color = "error";
   } else if (score > 50 && score <= 80) {
-    color = "warning";
+    color = "primary";
   } else if (score > 80) {
     color = "primary";
   }
@@ -105,6 +105,9 @@ function TamaSpeech(props) {
   console.log("Tama score");
   console.log(score);
 
+  console.log("currentSpeech");
+  console.log(currentSpeech);
+
   if (score <= 25) {
     color = "dark";
     baseSpeech = "I'm so hungry... I really need to eat soon !";
@@ -112,7 +115,7 @@ function TamaSpeech(props) {
     color = "warning";
     baseSpeech = "You haven't forgotten about me... right ??";
   } else if (score > 50 && score <= 80) {
-    color = "warning";
+    color = "primary";
     baseSpeech = "There's my favourite human !";
   } else if (score > 80) {
     color = "primary";
@@ -128,10 +131,11 @@ function TamaSpeech(props) {
   }
 
   if (currentSpeech !== undefined) {
-    finalSpeech = currentSpeech;
+    finalSpeech = currentSpeech.message;
   } else {
     finalSpeech = baseSpeech;
   }
+
 
   return <MKAlert color={color}>{finalSpeech}</MKAlert>;
 }
@@ -181,6 +185,7 @@ function Tamagotchi(props) {
   console.log(bearer);
   const [file, setFile] = useState();
   const [retrievedScore, setRetrievedScore] = useState(0);
+  const [recentEvent, setRecentEvent] = useState(undefined);
 
   console.log("profile", profile);
 
@@ -207,7 +212,17 @@ function Tamagotchi(props) {
       axios
         .post(url, formData, config)
         .then((response) => {
+          console.log("after axios data");
           console.log(response.data);
+          setRecentEvent(response.data.data.data);
+
+          console.log("atomic event score");
+          if (response.data.data.data.score !== undefined) {
+            console.log(response.data.data.data.score);
+            setRetrievedScore(retrievedScore + response.data.data.data.score);
+          }
+        
+
         })
         .catch(function (error) {
           window.alert("Your feeding did not succeed :( ! Please try again later.");
@@ -269,7 +284,7 @@ function Tamagotchi(props) {
                   </MKTypography>
                   <TamaProgressBar num_score={retrievedScore} />
                   <MKBox mt={1} mb={3}>
-                    <TamaSpeech passedScore={retrievedScore}></TamaSpeech>
+                    <TamaSpeech passedScore={retrievedScore} lastEvent={recentEvent}></TamaSpeech>
                     <MKBox width="100%" onSubmit={handleSubmit} component="form" autoComplete="off">
                       <MKBox p={3}>
                         <Grid container spacing={3}>
