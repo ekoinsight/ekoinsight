@@ -13,7 +13,7 @@ func main() {
 	
 
 	config := cors.DefaultConfig()
-  config.AllowOrigins = []string{"https://*.ekoinsight.ca", "https://ekoinsight.ca"}
+  config.AllowOrigins = []string{"https://horia.ekoinsight.ca", "https://ekoinsight.ca"}
 
 	router.Use(cors.New(config))
 
