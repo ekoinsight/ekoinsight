@@ -33,7 +33,7 @@ import Information from "pages/Home/sections/Information";
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/planet_earth.jpg";
+import bgImage from "assets/images/tama_banner.png";
 
 function Home() {
   return (
