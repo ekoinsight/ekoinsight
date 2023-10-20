@@ -77,7 +77,8 @@ Diagram and step-by-step high-level description of the flow of our solution:
 
 Diagram of all the infrastructure we use for a reliant, scalable, and extensible deployment !
 
-![Video transcription/translaftion app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
+![Full infrastructure diagram](./images/full_arch_diagram.png)
+
 
 
 ## Presentation materials
