@@ -67,7 +67,7 @@ function TamaProgressBar(props) {
 
 function TamaGif(props) {
   let gif = tama_sad;
-  let score = props.num_score;
+  let score = props;
   console.log("Tama score");
   console.log(score);
 
@@ -110,8 +110,8 @@ function Tamagotchi(props) {
         // Update the state with the retrieved user data
         setBackendUser(userData);
         setRetrievedScore(userData.data.data.health);
-        console.log("backendUser1");
-        console.log(backendUser);
+        console.log("retrievedScore initial");
+        console.log(retrievedScore);
       } catch (error) {
         console.error("Error fetching user data:", error);
         window.alert("Retrieving your profile failed. Please try again later.");
@@ -182,7 +182,8 @@ function Tamagotchi(props) {
       }
     }
   }
-
+  console.log("final score");
+  console.log(retrievedScore);
   return (
     <MKBox component="section" mb={0} pt={0} pb={{ xs: 6, sm: 12 }}>
       <Container>
