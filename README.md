@@ -29,7 +29,7 @@ While formal education about recycling at school is great, cementing this educat
 
 ### How our technology solution can help
 
-Interactive AI backed Tamagotchi-style app helping foster eco-responsibility and nurturing.
+The PlanetPalz Interactive AI-backed Tamagotchi-style app is designed to foster eco-responsibility and nurturing by engaging users in the care of their digital pet while integrating advanced AI technology for a dynamic and educational experience.
 
 ### Our idea
 
