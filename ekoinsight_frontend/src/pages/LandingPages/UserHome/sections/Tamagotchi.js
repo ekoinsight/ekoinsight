@@ -24,6 +24,7 @@ import Grid from "@mui/material/Grid";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
+import MKAlert from "components/MKAlert";
 import Card from "@mui/material/Card";
 import MKInput from "components/MKInput";
 
@@ -92,6 +93,34 @@ function TamaGif(props) {
   return gif;
 }
 
+function TamaSpeech(props) {
+  let speech = "Khoya j'ai faim ptn";
+  let color = "light";
+  let score = props;
+  console.log("Tama score");
+  console.log(score);
+
+  if (score <= 25) {
+    color = "dark";
+  } else if (score > 25 && score <= 50) {
+    color = "error";
+  } else if (score > 50 && score <= 80) {
+    color = "warning";
+  } else if (score > 80) {
+    color = "primary";;
+  }
+
+  if (score > 100) {
+    score = 100;
+  }
+
+  if (score < 0) {
+    score = 0;
+  }
+
+  return <MKAlert color={color}>{speech}</MKAlert>;
+}
+
 function Tamagotchi(props) {
   // useEffect to make the initial user data request on first render
   useEffect(() => {
@@ -108,7 +137,6 @@ function Tamagotchi(props) {
         console.log("userData below");
         console.log(userData);
         // Update the state with the retrieved user data
-        setBackendUser(userData);
         setRetrievedScore(userData.data.data.health);
         console.log("retrievedScore initial");
         console.log(retrievedScore);
@@ -137,7 +165,6 @@ function Tamagotchi(props) {
   console.log("bearer below");
   console.log(bearer);
   const [file, setFile] = useState();
-  const [backendUser, setBackendUser] = useState();
   const [retrievedScore, setRetrievedScore] = useState(0);
 
   console.log("profile", profile);
@@ -227,12 +254,7 @@ function Tamagotchi(props) {
                   </MKTypography>
                   <TamaProgressBar num_score={retrievedScore} />
                   <MKBox mt={1} mb={3}>
-                    <MKTypography variant="body2" component="p" color="text">
-                      Good morning, Tamagotchi Keeper! Your PlanetPal is thriving today. It woke up
-                      with a big smile, well-fed, and full of energy. It&apos;s been living a green
-                      and happy life with you! Keep up the fantastic work, and remember to nurture
-                      it with love and eco-friendly choices.
-                    </MKTypography>
+                    <TamaSpeech></TamaSpeech>
                     <MKBox width="100%" onSubmit={handleSubmit} component="form" autoComplete="off">
                       <MKBox p={3}>
                         <Grid container spacing={3}>
