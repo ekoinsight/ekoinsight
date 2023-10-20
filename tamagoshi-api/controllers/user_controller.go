@@ -173,7 +173,7 @@ func UserHealth(id string) (int, error) {
 
 		events = append(events, singleEvent)
 	}
-	log.Printf("Found %v feed event in the last 48 for user : %s", len(events),id)
+	log.Printf("Found %v feed event in the last 48h for user : %v", len(events),id)
 	userScore := 0
 	if err != nil {
 		return -1, err
