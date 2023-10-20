@@ -33,7 +33,7 @@ import Information from "pages/Home/sections/Information";
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/tama_banner.png";
+import bgImage from "assets/images/tama_bg1.jpg";
 
 function Home() {
   return (
