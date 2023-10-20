@@ -111,7 +111,7 @@ func GetUser() gin.HandlerFunc {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 						return
 					}
-					log.Printf("User succesfully created : %s", user)
+					log.Printf("User succesfully created : %v", user)
 					err = userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 					if err != nil {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -124,6 +124,7 @@ func GetUser() gin.HandlerFunc {
 						return 
 					}
 					user.Health = health
+					log.Printf("Updater user with computed health : %v", user)
 					c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 					return
 				}
@@ -131,13 +132,14 @@ func GetUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		log.Printf("User sucesfsfully found : %s", user)
+		log.Printf("User sucesfsfully found : %v", user)
 		health, err := UserHealth(userId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return 
 		}
 		user.Health = health
+		log.Printf("Updater user with computed health : %v", user)
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 	}
 }
@@ -181,12 +183,12 @@ func UserHealth(id string) (int, error) {
 		return -1, err
 	}
 	for _, event := range events {
-		log.Printf("Computing event %v with score: %s", event.Message, event.Score)
+		log.Printf("Computing event %v with score: %v", event.Message, event.Score)
 		userScore += event.Score
 	}
-	log.Printf("User score computed: %s", userScore)
+	log.Printf("User score computed: %v", userScore)
 	if userScore < 0 {
-		log.Printf("Correct score to zero: %s", userScore)
+		log.Printf("Correct score to zero: %v", userScore)
 		userScore = 0
 	}
 	return userScore, nil
