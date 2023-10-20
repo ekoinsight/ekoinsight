@@ -17,8 +17,6 @@
   - [How to run the project](#how-to-run-the-project)
   - [Live demo](#live-demo)
 - [About this template](#about-this-template)
-  - [Contributing](#contributing)
-  - [Versioning](#versioning)
   - [Authors](#authors)
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
@@ -109,11 +107,13 @@ For the best experience, choose the "add to home" option on your phone browser t
 
 ---
 
+## About this template
+
 ### Authors
 
-- **Alex Keenan** - [LinkedIn](https://www.linkedin.com/in/alex-keenan/)
-- **Horia Sandu** - [LinkedIn](https://www.linkedin.com/in/horia-sandu-7a7631162/)
-- **Omar Waldmann** - [LinkedIn](https://www.linkedin.com/in/omar-waldmann-82b19062/)
+- **Alex Keenan** - [Morgan Stanley] - [LinkedIn](https://www.linkedin.com/in/alex-keenan/)
+- **Horia Sandu** - [Morgan Stanley] - [LinkedIn](https://www.linkedin.com/in/horia-sandu-7a7631162/)
+- **Omar Waldmann** - [Morgan Stanley] - [LinkedIn](https://www.linkedin.com/in/omar-waldmann-82b19062/)
 
 ### License
 
