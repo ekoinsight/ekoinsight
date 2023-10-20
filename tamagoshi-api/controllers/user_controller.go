@@ -154,7 +154,7 @@ func UserHealth(id string) (int, error) {
 		"type": bson.M{
 			"$eq": "Feed",
 		},
-		"CreatedAt": bson.M{
+		"createdat": bson.M{
 			"$gte": time.Now().Add(-48 * time.Hour),
 		},
 	}
