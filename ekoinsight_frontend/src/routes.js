@@ -54,16 +54,16 @@ const routes = [
     columns: 1,
     rowsPerColumn: 2,
     collapse: [
-      {
-        name: "Info",
-        collapse: [
-          {
-            name: "contact us",
-            route: "/pages/landing-pages/contact-us",
-            component: <ContactUs />,
-          },
-        ],
-      },
+      // {
+      //   name: "Info",
+      //   collapse: [
+      //     {
+      //       name: "contact us",
+      //       route: "/pages/landing-pages/contact-us",
+      //       component: <ContactUs />,
+      //     },
+      //   ],
+      // },
       {
         name: "account",
         collapse: [

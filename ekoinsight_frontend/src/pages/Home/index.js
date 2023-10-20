@@ -83,7 +83,7 @@ function Home() {
               </MKTypography>
               <MKTypography
                 variant="body1"
-                fontWeight="bold"
+                // fontWeight="bold"
                 textAlign="center"
                 px={{ xs: 6, lg: 12 }}
                 mt={1}

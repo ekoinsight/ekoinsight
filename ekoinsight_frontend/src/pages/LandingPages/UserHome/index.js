@@ -25,15 +25,12 @@ import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // UserHome page sections
 import Profile from "pages/LandingPages/UserHome/sections/Profile";
 import Tamagotchi from "pages/LandingPages/UserHome/sections/Tamagotchi";
-import Posts from "pages/LandingPages/UserHome/sections/Posts";
-import Contact from "pages/LandingPages/UserHome/sections/Contact";
-import Footer from "pages/LandingPages/UserHome/sections/Footer";
 
 // Routes
 import routes from "routes";
 
 // Images
-import bgImage from "assets/images/city-profile.jpg";
+import bgImage from "assets/images/tama_bg4.jpg";
 
 import { useLocation } from "react-router-dom";
 
