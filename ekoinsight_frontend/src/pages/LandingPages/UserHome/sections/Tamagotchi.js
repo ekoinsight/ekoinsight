@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -59,6 +59,44 @@ function TamaProgressBar(props) {
 }
 
 function Tamagotchi(props) {
+  // useEffect to make the initial user data request on first render
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const url = `https://api.ekoinsight.ca/user/${profile.sub}`;
+        const config = {
+          headers: {
+            Authorization: bearer,
+          },
+        };
+        const response = await axios.get(url, config);
+        const userData = response.data;
+        console.log("userData below");
+        console.log(userData);
+        // Update the state with the retrieved user data
+        setBackendUser(userData);
+        setRetrievedScore(userData.data.data.health);
+        console.log("backendUser");
+        console.log(backendUser);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        window.alert("Retrieving your profile failed. Please try again later.");
+      }
+    };
+
+    // Call the function inside useEffect with an empty dependency array
+    fetchUserData();
+  }, []); // Empty dependency array for first render only
+
+  // useEffect to redo the request on re-render if needed
+  // useEffect(() => {
+  //   if (/* Add a condition to trigger re-fetching */) {
+  //     fetchUserData();
+  //   }
+  // }, [/* Add dependencies that trigger re-render when needed */]);
+
+  // ... rest of your component code
+
   const profile = props.idToken;
   const bearer = props.apiCred;
 
@@ -66,31 +104,7 @@ function Tamagotchi(props) {
   console.log(bearer);
   const [file, setFile] = useState();
   const [backendUser, setBackendUser] = useState();
-  const [retrievedScore, setRetrievedScore] = useState(110);
-
-  try {
-    event.preventDefault();
-    const url = `https://api.ekoinsight.ca/user/${profile.sub}`;
-    const config = {
-      headers: {
-        Authorization: bearer,
-      },
-    };
-    axios
-      .get(url, config)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        window.alert("Retrieving your profile failed :( ! Please try again later.");
-        console.log("error below from axios");
-        console.log(error.toJSON());
-      });
-  } catch (error) {
-    console.error("Error below");
-    console.error(error);
-    window.alert("Retrieving your profile failed :( Please try again later.");
-  }
+  const [retrievedScore, setRetrievedScore] = useState(0);
 
   console.log("profile", profile);
 
