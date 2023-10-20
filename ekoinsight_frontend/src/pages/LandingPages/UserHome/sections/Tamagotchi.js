@@ -31,7 +31,10 @@ import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 import Stack from "@mui/material/Stack";
 
+import tama_sad from "assets/images/tama_sad.gif";
+import tama_confused from "assets/images/tama_confused.gif";
 import tama_idle from "assets/images/tama_idle.gif";
+import tama_happy from "assets/images/tama_happy.gif";
 
 import MKProgress from "components/MKProgress";
 
@@ -41,7 +44,7 @@ function TamaProgressBar(props) {
   console.log(`color: ${color}`);
   console.log(`score: ${score}`);
 
-  if (score >= 0 && score <= 25) {
+  if (score <= 25) {
     color = "dark";
   } else if (score > 25 && score <= 50) {
     color = "error";
@@ -55,7 +58,38 @@ function TamaProgressBar(props) {
     score = 100;
   }
 
+  if (score < 0) {
+    score = 0;
+  }
+
   return <MKProgress color={color} value={score} />;
+}
+
+function TamaGif(props) {
+  let gif = tama_sad;
+  let score = props.num_score;
+  console.log("Tama score");
+  console.log(score);
+
+  if (score <= 25) {
+    gif = tama_sad;
+  } else if (score > 25 && score <= 50) {
+    gif = tama_confused;
+  } else if (score > 50 && score <= 80) {
+    gif = tama_idle;
+  } else if (score > 80) {
+    gif = tama_happy;
+  }
+
+  if (score > 100) {
+    score = 100;
+  }
+
+  if (score < 0) {
+    score = 0;
+  }
+
+  return gif;
 }
 
 function Tamagotchi(props) {
@@ -76,7 +110,7 @@ function Tamagotchi(props) {
         // Update the state with the retrieved user data
         setBackendUser(userData);
         setRetrievedScore(userData.data.data.health);
-        console.log("backendUser");
+        console.log("backendUser1");
         console.log(backendUser);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -159,7 +193,7 @@ function Tamagotchi(props) {
                 <MKBox position="relative" borderRadius="lg" mx={2} mt={-3}>
                   <MKBox
                     component="img"
-                    src={tama_idle}
+                    src={TamaGif(retrievedScore)}
                     borderRadius="lg"
                     width="100%"
                     position="relative"
@@ -237,4 +271,9 @@ Tamagotchi.propTypes = {
 TamaProgressBar.propTypes = {
   num_score: PropTypes.number,
 };
+
+TamaGif.propTypes = {
+  num_score: PropTypes.number,
+};
+
 export default Tamagotchi;
