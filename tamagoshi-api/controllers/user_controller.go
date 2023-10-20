@@ -286,8 +286,8 @@ func GetAllUsers() gin.HandlerFunc {
 }
 
 type FeedEventStruct struct {
-	Score int `json:"score"`
-	Reaction string `json:"reaction"`
+	Score int `json:"score,omitempty"`
+	Reaction string `json:"reaction,omitempty"`
 }
 
 func FeedUser() gin.HandlerFunc {
