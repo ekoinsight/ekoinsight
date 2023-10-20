@@ -22,7 +22,7 @@ _INSTRUCTIONS: This GitHub repository serves as a template you can use to create
 
 _New to Git and GitHub? This free online course will get you up to speed quickly: [Getting Started with Git and GitHub](https://www.coursera.org/learn/getting-started-with-git-and-github)_.
 
-# Replace this heading with your team/submission name
+# PlanetPalz (previously known as ekoinsight)
 
 - [Project summary](#project-summary)
   - [The issue we are hoping to solve](#the-issue-we-are-hoping-to-solve)
@@ -68,7 +68,7 @@ And instilling a habit of thinking about recycling has its benefits. Research re
 Aiming for this age group is also ideal since early childhood education is particularly influential in shaping attitudes and values, making it a critical period for instilling sustainable practices (https://amshq.org/Blog/2023-05-24-Reduce-Reuse-Recycle-Environmental-Education-in-the-Montessori-Classroom).
 
 The creature will be brought to life with textual communications using Watson X and the Llama 2 model, customizable in look and fed via pictures of recyclable objects children can identify in the real world. 
-Using the Blip2 model we identify what's in the picture and pass that information along to the LLM which converts that into a score and an educational response for the creature to write back in any language.
+Using the Blip2 model we identify what's in the picture and pass that information along to the LLM which converts that into a score and an educational response for the creature to write back. At the moment it's only in English due to lack of time but we are very close to allow a response in any language.
 
 If the item is recyclable, the creature's health pool increases, and the creature responds in a happy manner with educational information regarding the item. If the item is not recyclable, then its health pool decreases and the creature responds in kind.  
 
@@ -110,7 +110,7 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Solution demo video
 
-[![Watch the video](https://raw.githubusercontent.com/Liquid-Prep/Liquid-Prep/main/images/readme/IBM-interview-video-image.png)](https://youtu.be/vOgCOoy_Bx0)
+https://www.youtube.com/watch?v=EU5JAOOCKT4&ab_channel=AK_RD44
 
 ### Project development roadmap
 
