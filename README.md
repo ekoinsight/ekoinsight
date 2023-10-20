@@ -110,7 +110,7 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Solution demo video
 
-https://www.youtube.com/watch?v=EU5JAOOCKT4&ab_channel=AK_RD44
+https://www.youtube.com/watch?v=IoCffN-gAz8&ab_channel=AK_RD44
 
 ### Project development roadmap
 
