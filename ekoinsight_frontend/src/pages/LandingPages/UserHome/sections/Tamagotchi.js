@@ -51,7 +51,6 @@ function Tamagotchi(props) {
     const config = {
       headers: {
         Authorization: bearer,
-        Accept: "("
       },
     };
     axios
