@@ -111,11 +111,9 @@ For the best experience, choose the "add to home" option on your phone browser t
 
 ### Authors
 
-<a href="https://github.com/ekoinsight/ekoinsight/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=ekoinsight/ekoinsight" />
-</a>
-
-- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
+- **Alex Keenan** - [LinkedIn](https://www.linkedin.com/in/alex-keenan/)
+- **Horia Sandu** - [LinkedIn](https://www.linkedin.com/in/horia-sandu-7a7631162/)
+- **Omar Waldmann** - [LinkedIn](https://www.linkedin.com/in/omar-waldmann-82b19062/)
 
 ### License
 
