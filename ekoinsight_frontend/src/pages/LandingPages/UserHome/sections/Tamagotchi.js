@@ -21,20 +21,42 @@ import axios from "axios";
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import Card from "@mui/material/Card";
 import MKInput from "components/MKInput";
 
-import MKAvatar from "components/MKAvatar";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-
-import CenteredBlogCard from "examples/Cards/BlogCards/CenteredBlogCard";
+import Stack from "@mui/material/Stack";
 
 import tama_idle from "assets/images/tama_idle.gif";
+
+import MKProgress from "components/MKProgress";
+
+function TamaProgressBar(props) {
+  let color = "primary";
+  let score = props.num_score;
+  console.log(`color: ${color}`);
+  console.log(`score: ${score}`);
+
+  if (score >= 0 && score <= 25) {
+    color = "dark";
+  } else if (score > 25 && score <= 50) {
+    color = "error";
+  } else if (score > 50 && score <= 80) {
+    color = "warning";
+  } else if (score > 80) {
+    color = "primary";
+  }
+
+  if (score > 100) {
+    score = 100;
+  }
+
+  return <MKProgress color={color} value={score} />;
+}
 
 function Tamagotchi(props) {
   const profile = props.idToken;
@@ -44,6 +66,7 @@ function Tamagotchi(props) {
   console.log(bearer);
   const [file, setFile] = useState();
   const [backendUser, setBackendUser] = useState();
+  const [retrievedScore, setRetrievedScore] = useState(110);
 
   try {
     event.preventDefault();
@@ -151,8 +174,9 @@ function Tamagotchi(props) {
                     textTransform="capitalize"
                     fontWeight="regular"
                   >
-                    Score: 100
+                    Score: {retrievedScore}
                   </MKTypography>
+                  <TamaProgressBar num_score={retrievedScore} />
                   <MKBox mt={1} mb={3}>
                     <MKTypography variant="body2" component="p" color="text">
                       Good morning, Tamagotchi Keeper! Your PlanetPal is thriving today. It woke up
@@ -194,5 +218,9 @@ function Tamagotchi(props) {
 Tamagotchi.propTypes = {
   idToken: PropTypes.object,
   apiCred: PropTypes.string,
+};
+
+TamaProgressBar.propTypes = {
+  num_score: PropTypes.number,
 };
 export default Tamagotchi;
