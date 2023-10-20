@@ -90,45 +90,24 @@ https://www.youtube.com/watch?v=IoCffN-gAz8&ab_channel=AK_RD44
 
 ### Project development roadmap
 
-The project currently does the following things.
-
-- Engages children to feed and take care of their pet earth creature, thus forming a habit of thinking about sustainability.
-- The user can send it pictures of recyclable material they see in real life, which is a novel way of tying
-- The earth pet educates the child based on whatever the child just fed it. 
-
-In the future we plan to...
-
+TODO: ALSO DO OFFICIAL SUBMISSION !
 See below for our proposed schedule on next steps after Call for Code 2023 submission.
 
 ![Roadmap](./images/roadmap.jpeg)
 
 ## Additional details
 
-_INSTRUCTIONS: The following deliverables are suggested, but **optional**. Additional details like this can help the judges better review your solution. Remove any sections you are not using._
-
 ### How to run the project
 
-INSTRUCTIONS: In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
+While this shouldn't be needed as live production infrastructure is up and running, all components of this project can be built via python, go, and react build tools. Dockerfiles are available to build our APIs, and our images are available on DockerHub.
 
 ### Live demo
 
-You can find a running system to test at...
+Our application is available for all platforms at https://ekoinsight.ca. 
 
-See our [description document](./docs/DESCRIPTION.md) for log in credentials.
+For the best experience, choose the "add to home" option on your phone browser to get a React app created and get a native app-like experience.
 
 ---
-
-_INSTRUCTIONS: You can remove the below section from your specific project README._
-
-## About this template
-
-### Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-### Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ### Authors
 
@@ -144,5 +123,5 @@ This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE)
 
 ### Acknowledgments
 
-- Based on [Creative Tim's Material React components](https://www.creative-tim.com/learning-lab/react/overview/material-kit/).
+- Our React frontend is based on [Creative Tim's Material React components](https://www.creative-tim.com/learning-lab/react/overview/material-kit/).
 
