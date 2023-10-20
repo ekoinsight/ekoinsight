@@ -153,12 +153,8 @@ func UserHealth(id string) (int, error) {
 	
 	// Lookup all Feed events of user (id) in the last 48 hours
 	filter := bson.M{
-		"userId": bson.M{
-			"$eq": id, 
-		},
-		"type": bson.M{
-			"$eq": "Feed",
-		},
+		"userId": id,
+		"type": "Feed",
 		"createdat": bson.M{
 			"$gte": time.Now().Add(-48 * time.Hour),
 		},
