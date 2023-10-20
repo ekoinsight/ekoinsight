@@ -94,20 +94,29 @@ function TamaGif(props) {
 }
 
 function TamaSpeech(props) {
-  let speech = "Khoya j'ai faim ptn";
   let color = "light";
-  let score = props;
+  let baseSpeech = "There's my favourite human !";
+
+  let finalSpeech = "";
+  let currentSpeech = props.lastEvent;
+
+  let score = props.passedScore;
+
   console.log("Tama score");
   console.log(score);
 
   if (score <= 25) {
     color = "dark";
+    baseSpeech = "I'm so hungry... I really need to eat soon !";
   } else if (score > 25 && score <= 50) {
-    color = "error";
+    color = "warning";
+    baseSpeech = "You haven't forgotten about me... right ??";
   } else if (score > 50 && score <= 80) {
     color = "warning";
+    baseSpeech = "There's my favourite human !";
   } else if (score > 80) {
-    color = "primary";;
+    color = "primary";
+    baseSpeech = "You're the best ! I really feel like we're making a difference !";
   }
 
   if (score > 100) {
@@ -118,7 +127,13 @@ function TamaSpeech(props) {
     score = 0;
   }
 
-  return <MKAlert color={color}>{speech}</MKAlert>;
+  if (currentSpeech !== undefined) {
+    finalSpeech = currentSpeech;
+  } else {
+    finalSpeech = baseSpeech;
+  }
+
+  return <MKAlert color={color}>{finalSpeech}</MKAlert>;
 }
 
 function Tamagotchi(props) {
@@ -254,7 +269,7 @@ function Tamagotchi(props) {
                   </MKTypography>
                   <TamaProgressBar num_score={retrievedScore} />
                   <MKBox mt={1} mb={3}>
-                    <TamaSpeech></TamaSpeech>
+                    <TamaSpeech passedScore={retrievedScore}></TamaSpeech>
                     <MKBox width="100%" onSubmit={handleSubmit} component="form" autoComplete="off">
                       <MKBox p={3}>
                         <Grid container spacing={3}>
@@ -297,6 +312,11 @@ TamaProgressBar.propTypes = {
 
 TamaGif.propTypes = {
   num_score: PropTypes.number,
+};
+
+TamaSpeech.propTypes = {
+  lastEvent: PropTypes.string,
+  passedScore: PropTypes.number,
 };
 
 export default Tamagotchi;
