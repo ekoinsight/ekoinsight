@@ -1,4 +1,4 @@
-## IBM Call for Code submission: by Alex Keenan, Horia Sandu and Omar Waldmann from Morgan Stanley
+## IBM Call for Code submission: by Alex Keenan, Horia Sandu and Omar Waldmann - Morgan Stanley
 
 # PlanetPalz (previously known as ekoinsight)
 
