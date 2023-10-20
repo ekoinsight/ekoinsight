@@ -117,11 +117,13 @@ func GetUser() gin.HandlerFunc {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 						return
 					}
-					user.Health, err = UserHealth(userId)
+					health, err := UserHealth(userId)
+					
 					if err != nil {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 						return 
 					}
+					user.Health = health
 					c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 					return
 				}
@@ -130,11 +132,12 @@ func GetUser() gin.HandlerFunc {
 			return
 		}
 		log.Printf("User sucesfsfully found : %s", user)
-		user.Health, err = UserHealth(userId)
+		health, err := UserHealth(userId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return 
 		}
+		user.Health = health
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 	}
 }
