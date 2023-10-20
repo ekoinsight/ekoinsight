@@ -80,6 +80,7 @@ func GetUser() gin.HandlerFunc {
 		err := userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
+				log.Printf("Error ErrNoDocuments : %s", err.Error())
 				err = nil
 				defer cancel()
 				tokenData := c.MustGet("tokenContent")
@@ -110,6 +111,7 @@ func GetUser() gin.HandlerFunc {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 						return
 					}
+					log.Printf("User succesfully created : %s", user)
 					err = userCollection.FindOne(ctx, bson.M{"id": userId}).Decode(&user)
 					if err != nil {
 						c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -127,6 +129,7 @@ func GetUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
+		log.Printf("User sucesfsfully found : %s", user)
 		user.Health, err = UserHealth(userId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -137,6 +140,7 @@ func GetUser() gin.HandlerFunc {
 }
 
 func UserHealth(id string) (int, error) {
+	log.Printf("Compute health of user : %s", id)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var events []models.Event
 	defer cancel()
@@ -168,15 +172,18 @@ func UserHealth(id string) (int, error) {
 
 		events = append(events, singleEvent)
 	}
+	log.Printf("Found %v feed event in the last 48 for user : %s", len(events),id)
 	userScore := 0
 	if err != nil {
 		return -1, err
 	}
 	for _, event := range events {
+		log.Printf("Computing event %v with score: %s", event.Message, event.Score)
 		userScore += event.Score
 	}
-	
+	log.Printf("User score computed: %s", userScore)
 	if userScore < 0 {
+		log.Printf("Correct score to zero: %s", userScore)
 		userScore = 0
 	}
 	return userScore, nil
