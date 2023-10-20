@@ -1,18 +1,3 @@
-# Setup notes for backend:
-
-Install deps with pip install -r requirements
-
-python3.11 -m spacy download en_core_web_sm
-
-wget https://huggingface.co/spaces/abhishek/StableSAM/resolve/main/sam_vit_h_4b8939.pth
-
-mkdir models
-mv sam_vit_h_4b8939.pth models
-
-cd ekoinsight/backend/ekoinsight
-
-Start with python app.py 
-
 # IBM template below
 
 
