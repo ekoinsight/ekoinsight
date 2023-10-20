@@ -69,18 +69,18 @@ To enable routing to our virtual private cloud, we employ the "Floating IP for V
 
 ### Solution architecture
 
-Diagram and step-by-step description of the flow of our solution:
+Diagram and step-by-step high-level description of the flow of our solution:
+
+![High-level solution flow diagram](./images/high_level_arch.png)
+
+### Infrastructure diagram
+
+Diagram of all the infrastructure we use for a reliant, scalable, and extensible deployment !
 
 ![Video transcription/translaftion app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
 
-1. The user navigates to the site and uploads a video file.
-2. Watson Speech to Text processes the audio and extracts the text.
-3. Watson Translation (optionally) can translate the text to the desired language.
-4. The app stores the translated text as a document within Object Storage.
 
 ## Presentation materials
-
-_INSTRUCTIONS: The following deliverables should be officially posted to your My Team > Submissions section of the [Call for Code Global Challenge resources site](https://cfc-prod.skillsnetwork.site/), but you can also include them here for completeness. Replace the examples seen here with your own deliverable links._
 
 ### Solution demo video
 
@@ -88,7 +88,6 @@ https://www.youtube.com/watch?v=IoCffN-gAz8&ab_channel=AK_RD44
 
 ### Project development roadmap
 
-TODO: ALSO DO OFFICIAL SUBMISSION !
 See below for our proposed schedule on next steps after Call for Code 2023 submission.
 
 ![Roadmap](./images/roadmap.jpeg)
